@@ -4,4 +4,4 @@
 
 ## Diagrama de Casos d'Ús
 
-![nombre](Diagrames/Diagrama_de_casos_d'us.png)
+![Diagrama de Casos d'Ús](Diagrames/Diagrama_de_casos_d'us.png)
