@@ -1,0 +1,31 @@
+<!-- src/views/categories/list.ejs -->
+<%- include('../partials/header', { title: 'Categories' }) %>
+
+<div class="row">
+  <div class="col-12">
+    <h1>Llistat de Categories</h1>
+    <a href="/categories/new" class="btn btn-primary mb-3">Nova Categoria</a>
+    
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Accions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% categories.forEach(category => { %>
+          <tr>
+            <td><%= category.name %></td>
+            <td>
+              <a href="/categories/<%= category.id %>/edit" class="btn btn-sm btn-warning">Editar</a>
+              <a href="/categories/<%= category.id %>/delete" class="btn btn-sm btn-danger" onclick="return confirm('Segur que vols eliminar?')">Eliminar</a>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

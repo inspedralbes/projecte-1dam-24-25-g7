@@ -1,0 +1,41 @@
+<!-- src/views/motorcycles/new.ejs -->
+<%- include('../partials/header', { title: 'Nova Moto' }) %>
+
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <h1>Crear Nova Moto</h1>
+    <form action="/motorcycles/create" method="POST">
+      <div class="mb-3">
+        <label for="name" class="form-label">Nom</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+      </div>
+      <div class="mb-3">
+        <label for="brand" class="form-label">Marca</label>
+        <input type="text" class="form-control" id="brand" name="brand" required>
+      </div>
+      <div class="mb-3">
+        <label for="cc" class="form-label">Cilindrada</label>
+        <input type="number" class="form-control" id="cc" name="cc" required>
+      </div>
+      <div class="mb-3">
+        <label for="country" class="form-label">País</label>
+        <select name="country" id="cars" class="form-control" required>
+          <option value="italy">Italia</option>
+          <option value="usa">USA</option>
+          <option value="japan">Japó</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="categoryId" class="form-label">Categoria</label>
+        <select class="form-select" id="categoryId" name="categoryId" required>
+          <% categories.forEach(category => { %>
+            <option value="<%= category.id %>"><%= category.name %></option>
+          <% }); %>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Crear Moto</button>
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
