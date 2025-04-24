@@ -4,4 +4,4 @@
 
 ## Diagrama de Casos d'Ús
 
-![Esquema Entitat-Relació](Diagrama_de_casos_d'us.png)
+![nombre](Diagrames/Diagrama_de_casos_d'us.png)
