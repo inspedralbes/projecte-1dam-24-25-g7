@@ -1,3 +1,3 @@
 ## Diagrama Entitat-Relació
 
-![Esquema Entitat-Relació](Diagrames/Diagrama Entitat_Relacio.jpg)
+![Esquema Entitat-Relació](Diagrames/Entitat_Relació.jpg)
