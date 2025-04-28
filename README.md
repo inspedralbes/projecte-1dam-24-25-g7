@@ -1,5 +1,8 @@
 Autors: Enrique Cayo i Judit Sarrat
 
+## Links importants
+
+[Enunciat del Projecte]([URL](https://sites.google.com/inspedralbes.cat/projecte-dam1))
 
 ## Diagrama Entitat-Relació
 
