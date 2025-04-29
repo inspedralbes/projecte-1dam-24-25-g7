@@ -1,5 +1,12 @@
 Autors: Enrique Cayo i Judit Sarrat
 
+## Links importants
+
+[Enunciat del Projecte](https://sites.google.com/inspedralbes.cat/projecte-dam1)
+
+[Taiga](https://tree.taiga.io/project/a24judsarand-gestor-incidencies-dam1pj7/timeline)
+
+[Bitacores](https://docs.google.com/spreadsheets/d/1q6uztUwibMnCs8DnlK52TZOzmy4TE9N9JnrPHoaWkR8/edit?gid=1537567097#gid=1537567097)
 
 ## Diagrama Entitat-Relació
 
