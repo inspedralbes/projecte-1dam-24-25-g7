@@ -1,7 +1,7 @@
 services:
-  motos-app:
+  incidencies-app:
     build: .
-    container_name: motos-project-1DAM
+    container_name: incidencies-project-1DAM
     env_file:
       - .env
     volumes:
@@ -13,7 +13,7 @@ services:
 
   db:
     image: mysql:5.7
-    container_name: motos-db-container
+    container_name: incidencies-db-container
     env_file:
       - .env
     environment:
@@ -21,11 +21,16 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
       - "3306:3306"
+    volumes:
+      - incidencies_db_data:/var/lib/mysql
 
   adminer:
     image: adminer
-    container_name: motos-adminer
+    container_name: incidencies-adminer
     depends_on:
     - db
     ports:
-    - "8080:8080" 
+    - "8080:8080"
+
+volumes:
+  incidencies_db_data:
