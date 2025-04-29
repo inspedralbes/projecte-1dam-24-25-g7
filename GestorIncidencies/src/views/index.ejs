@@ -1,5 +1,16 @@
-<!-- src/views/index.ejs -->
-<%- include('partials/header', { title: 'Projecte Motos' }) %>
-  <h1>Benvingut al projecte Motos!</h1>
-  <p>Aquesta és la pàgina d’inici, renderitzada amb EJS.</p>
+<%- include('partials/header', { title: 'Inici' }) %>
+
+    <!-- Agafem l'estructura del teu user.html/admin.html -->
+    <div class="title-box">
+        <h1>GESTOR<br>D'INCIDENCIES</h1>
+    </div>
+
+    <div class="action-buttons">
+        <!-- Enllaços a les seccions principals -->
+        <a href="/incidents">Veure Incidències</a>
+        <a href="/incidents/new">Nova Incidència</a>
+        <a href="/statuses">Gestionar Estats</a>
+        <a href="/priorities">Gestionar Prioritats</a>
+    </div>
+
 <%- include('partials/footer') %>

@@ -1,0 +1,33 @@
+<%- include('../partials/header', { title: 'Nou Estat' }) %>
+
+    <div class="title-box">
+        <h1>CREAR NOU ESTAT</h1>
+    </div>
+
+    <%# Mostrar missatges d'error (p.ex., nom buit o duplicat) %>
+    <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+        <div class="alert alert-danger" role="alert" style="width: 80%; max-width: 600px; margin: 0 auto 20px auto; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 15px; border-radius: 4px;">
+            <%= errorMessage %>
+        </div>
+    <% } %>
+
+    <form action="/statuses/create" method="POST" class="incident-form" style="width: 80%; max-width: 600px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+
+        <div class="form-group">
+            <label for="name">Nom de l'Estat:</label>
+            <input type="text" id="name" name="name" required placeholder="Ex: Obert, En Progrés, Tancat...">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Descripció (opcional):</label>
+            <textarea id="description" name="description" rows="3" placeholder="Breu explicació de què significa aquest estat..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <button type="submit">Crear Estat</button>
+            <a href="/statuses" style="text-decoration: none; padding: 0.8em 1.5em; background-color: #6c757d; color: white; border-radius: 4px; font-size: 1em; margin-left: 1em;">Cancel·lar</a>
+        </div>
+
+    </form>
+
+<%- include('../partials/footer') %>

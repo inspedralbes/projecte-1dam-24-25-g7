@@ -1,0 +1,49 @@
+<%- include('../partials/header', { title: 'Prioritats d\'Incidència' }) %>
+
+    <div class="title-box">
+        <h1>LLISTAT DE PRIORITATS</h1>
+    </div>
+
+    <div class="action-buttons" style="margin-bottom: 30px;">
+         <a href="/priorities/new">Nova Prioritat</a>
+    </div>
+
+    <%# Mostrar missatges d'error %>
+    <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+        <div class="alert alert-danger" role="alert" style="width: 90%; max-width: 800px; margin: 0 auto 20px auto; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 15px; border-radius: 4px;">
+            <%= errorMessage %>
+        </div>
+    <% } %>
+
+    <div class="table-container" style="width: 90%; max-width: 800px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow-x: auto;">
+        <% if (typeof priorities !== 'undefined' && priorities.length > 0) { %>
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="background-color: #eee;">
+                        <th style="border: 1px solid #ccc; padding: 10px;">Nom</th>
+                        <th style="border: 1px solid #ccc; padding: 10px;">Nivell</th>
+                        <th style="border: 1px solid #ccc; padding: 10px;">Accions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%# Ordenem per nivell abans de mostrar %>
+                    <% priorities.sort((a, b) => a.level - b.level).forEach(priority => { %>
+                        <tr>
+                            <td style="border: 1px solid #ccc; padding: 8px;"><%= priority.name %></td>
+                            <td style="border: 1px solid #ccc; padding: 8px;"><%= priority.level %></td>
+                            <td style="border: 1px solid #ccc; padding: 8px; white-space: nowrap;">
+                                <a href="/priorities/<%= priority.id %>/edit" style="margin-right: 5px; text-decoration: none; background-color: #ffc107; color: black; padding: 3px 8px; border-radius: 3px; font-size: 0.9em;">Editar</a>
+                                <form action="/priorities/<%= priority.id %>/delete" method="POST" style="display: inline;" onsubmit="return confirm('Estàs segur que vols eliminar la prioritat \'<%= priority.name %>\'? Aquesta acció fallarà si està en ús.');">
+                                    <button type="submit" style="border: none; background-color: #dc3545; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.9em; cursor: pointer;">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No hi ha prioritats definides.</p>
+        <% } %>
+    </div>
+
+<%- include('../partials/footer') %>

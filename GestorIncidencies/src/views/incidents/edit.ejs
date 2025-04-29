@@ -1,0 +1,81 @@
+<%- include('../partials/header', { title: 'Editar Incidència #' + incident.id }) %>
+
+    <div class="title-box">
+        <h1>EDITAR INCIDÈNCIA #<%= incident.id %></h1>
+    </div>
+
+    <form action="/incidents/<%= incident.id %>/update" method="POST" class="incident-form" style="width: 80%; max-width: 700px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+
+        <!-- Camp Títol pre-carregat -->
+        <div class="form-group">
+            <label for="incident_title">Títol breu:</label>
+            <input type="text" id="incident_title" name="title" required value="<%= incident.title %>">
+        </div>
+
+        <!-- Camp Descripció pre-carregat -->
+        <div class="form-group">
+            <label for="incident_desc">Descripció detallada:</label>
+            <textarea id="incident_desc" name="description" rows="6" required><%= incident.description %></textarea>
+        </div>
+
+         <!-- Camp Reportat per (pre-seleccionat) -->
+         <div class="form-group">
+            <label for="reporterUser">Reportat per:</label>
+            <select id="reporterUser" name="reporterUserId" required>
+                <option value="" disabled>-- Selecciona qui reporta --</option>
+                <% users.forEach(user => { %>
+                    <option value="<%= user.id %>" <%= incident.reporterUserId === user.id ? 'selected' : '' %>>
+                        <%= user.firstName %> <%= user.lastName %> (<%= user.username %>)
+                    </option>
+                <% }); %>
+            </select>
+        </div>
+
+        <!-- Camp Assignat a (pre-seleccionat, permet no assignat) -->
+         <div class="form-group">
+            <label for="assignedUser">Assignat a:</label>
+            <select id="assignedUser" name="assignedUserId">
+                <option value="" <%= !incident.assignedUserId ? 'selected' : '' %>>-- No Assignat --</option>
+                <% users.forEach(user => { %>
+                     <% if (user.role === 'technician' || user.role === 'admin') { %>
+                        <option value="<%= user.id %>" <%= incident.assignedUserId === user.id ? 'selected' : '' %>>
+                            <%= user.firstName %> <%= user.lastName %> (<%= user.username %>)
+                        </option>
+                     <% } %>
+                <% }); %>
+            </select>
+        </div>
+
+        <!-- Camp Estat (pre-seleccionat) -->
+        <div class="form-group">
+            <label for="status_incidencia">Estat:</label>
+            <select id="status_incidencia" name="statusId" required>
+                <% statuses.forEach(status => { %>
+                    <option value="<%= status.id %>" <%= incident.statusId === status.id ? 'selected' : '' %>>
+                        <%= status.name %>
+                    </option>
+                <% }); %>
+            </select>
+        </div>
+
+        <!-- Camp Prioritat (pre-seleccionat) -->
+        <div class="form-group">
+            <label for="priority_incidencia">Prioritat:</label>
+            <select id="priority_incidencia" name="priorityId" required>
+                 <% priorities.forEach(priority => { %>
+                     <option value="<%= priority.id %>" <%= incident.priorityId === priority.id ? 'selected' : '' %>>
+                         <%= priority.name %>
+                     </option>
+                 <% }); %>
+             </select>
+        </div>
+
+        <!-- Botons d'acció -->
+        <div class="form-group">
+            <button type="submit">Actualitzar Incidència</button>
+            <a href="/incidents" style="text-decoration: none; padding: 0.8em 1.5em; background-color: #6c757d; color: white; border-radius: 4px; font-size: 1em; margin-left: 1em;">Cancel·lar</a>
+        </div>
+
+    </form>
+
+<%- include('../partials/footer') %>
