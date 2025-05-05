@@ -21,7 +21,7 @@ const Incident = require('./models/Incident');
 const Status = require('./models/Status');
 const Priority = require('./models/Priority');
 const Comment = require('./models/Comment');
-const Actuacions = require('./models/Actuacions');
+//const Actuacions = require('./models/Actuacions');
 
 // Definir associacions
 User.hasMany(Incident, { foreignKey: 'reporterUserId', as: 'reportedIncidents' });
@@ -42,10 +42,10 @@ Comment.belongsTo(Incident, { foreignKey: 'incidentId' });
 User.hasMany(Comment, { foreignKey: 'userId' });
 Comment.belongsTo(User, { foreignKey: 'userId' });
 
-Actuacions.hasMany(Actuacions,{foreignKey: 'ActuacionsId' });
-User.hasMany(Actuacions,{foreignKey: 'ActuacioId'})
+//Actuacions.hasMany(Actuacions,{foreignKey: 'ActuacionsId' });
+//User.hasMany(Actuacions,{foreignKey: 'ActuacioId'})
 
 // Exportar sequelize i els models (opcionalment)
-module.exports = { sequelize, User, Incident, Status, Priority, Comment, Actuacions};
+module.exports = { sequelize, User, Incident, Status, Priority, Comment }; //Actuacions
 // O només exportar sequelize si els altres mòduls importen directament els models
 // module.exports = sequelize;
