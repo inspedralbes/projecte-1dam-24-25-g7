@@ -23,11 +23,7 @@ const Incident = sequelize.define('Incident', {
   },
   // --- Claus Foranes (Foreign Keys) ---
   // Aquestes es connectaran amb les associacions
-  reporterUserId: { // Qui va reportar la incidència
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    // references: { model: 'users', key: 'id' } // L'associació ho configurarà
-  },
+  
   assignedUserId: { // A qui està assignada (pot ser null si no està assignada)
     type: DataTypes.INTEGER,
     allowNull: true,

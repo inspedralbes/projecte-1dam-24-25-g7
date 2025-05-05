@@ -21,7 +21,7 @@ const Actuacions = sequelize.define('Actuacions', {
     allowNull: false,
   },
   ActuacioResolution: { // resolucion
-    type: DataTypes.String,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   idTecnic: {

@@ -4,7 +4,7 @@ require('dotenv').config();
 const path = require('path'); // Manté path per a les vistes i estàtics
 
 // Importa TOTS els models i sequelize des de db.js
-const { sequelize, User, Status, Priority, Incident, Comment } = require('./db');
+const { sequelize, Tecnic,  Status, Priority, Incident, Comment } = require('./db');
 
 // Rutes per API JSON (si les necessites, crea-les o adapta les antigues)
 // const incidentApiRoutes = require('./routes/incidents.routes');
@@ -78,18 +78,16 @@ app.get('/', (req, res) => {
     const priorityCritical = await Priority.create({ name: 'Crítica', level: 4 });
     console.log('Prioritats creades.');
 
-    // 3. Crear Usuaris (User) - Recorda HASHEJAR les contrasenyes en un cas real!
-    const userAdmin = await User.create({ username: 'admin', email: 'admin@example.com', password: 'password123', firstName: 'Admin', lastName: 'Istrador', role: 'admin' });
-    const userTech1 = await User.create({ username: 'jtec', email: 'jtec@example.com', password: 'password123', firstName: 'Joan', lastName: 'Tècnic', role: 'technician' });
-    const userReporter1 = await User.create({ username: 'mrep', email: 'mrep@example.com', password: 'password123', firstName: 'Maria', lastName: 'Reportadora', role: 'reporter' });
-    console.log('Usuaris creats.');
+    // 3. Crear Tecnics (Tecnic) - Recorda HASHEJAR les contrasenyes en un cas real!
+    const tecnic1 = await Tecnic.create({ nom: 'alvaro'});
+    console.log('tecnic creats.');
 
     // 4. Crear Incidències (Incident) d'exemple
     await Incident.create({
         title: 'La impressora no funciona',
         description: 'La impressora del departament de comptabilitat no imprimeix. Fa un soroll estrany.',
-        reporterUserId: userReporter1.id, // ID de Maria
-        assignedUserId: userTech1.id, // Assignada a Joan
+       
+       
         statusId: statusInProgress.id, // En progrés
         priorityId: priorityMedium.id // Prioritat Mitja
     });
@@ -97,7 +95,7 @@ app.get('/', (req, res) => {
     await Incident.create({
         title: 'Error en accedir al CRM',
         description: 'No puc entrar al sistema CRM des de les 9:00. Mostra un error 500.',
-        reporterUserId: userReporter1.id, // ID de Maria
+     
         // assignedUserId: null, // No assignada encara
         statusId: statusOpen.id, // Oberta
         priorityId: priorityHigh.id // Prioritat Alta
@@ -110,7 +108,7 @@ app.get('/', (req, res) => {
         await Comment.create({
             text: 'He reiniciat la cua d\'impressió, sembla que ara funciona. Pots confirmar?',
             incidentId: incidents[0].id, // Comentari a la primera incidència
-            userId: userTech1.id // Fet per Joan Tècnic
+         
         });
         console.log('Comentaris creats.');
     }

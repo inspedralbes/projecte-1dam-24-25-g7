@@ -20,7 +20,7 @@ const Comment = sequelize.define('Comment', {
   },
   userId: { // Qui va escriure el comentari
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     // references: { model: 'users', key: 'id' }
   },
 }, {
