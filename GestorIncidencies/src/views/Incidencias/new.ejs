@@ -1,0 +1,44 @@
+<%- include('../partials/header', { title: 'Nova Incidència' }) %>
+
+    <div class="title-box">
+        <h1>REGISTRAR NOVA INCIDÈNCIA</h1>
+    </div>
+
+    <!-- Utilitzem les classes i estructura del teu form_incidencia.html -->
+    <!-- El formulari apunta a la ruta POST /incidents/create -->
+    <form action="/Incidencies/create" method="POST" class="incident-form" style="width: 80%; max-width: 700px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+
+        <!-- Camp per seleccionar a qui s'assigna (Opcional) -->
+        <div class="form-group">
+            <label for="departament">Departament:</label>
+            <select id="departament" name="DepartamentId">
+                <option value="">-- No Assignat --</option> <!-- Valor buit per no assignar -->
+                <% departaments.forEach(dpt => { %>                     
+                        <option value="<%= dpt.id %>"><%= dpt.name %> </option>                     
+                <% }); %>
+            </select>
+        </div>
+
+        <!-- Camp per al Títol -->
+        <div class="form-group">
+            <label for="incident_title">Títol breu:</label>
+            <input type="text" id="incident_title" name="title" required placeholder="Ex: Projector aula B15 no funciona">
+        </div>
+
+        <!-- Camp per a la Descripció -->
+        <div class="form-group">
+            <label for="incident_desc">Descripció detallada:</label>
+            <textarea id="incident_desc" name="description" rows="6" required placeholder="Descriu el problema: què passa, on exactament, des de quan..."></textarea>
+        </div>
+
+      
+
+        <!-- Botons d'acció -->
+        <div class="form-group">
+            <button type="submit">Crear Incidència</button>
+            <button type="reset">Netejar</button>
+        </div>
+
+    </form>
+
+<%- include('../partials/footer') %>

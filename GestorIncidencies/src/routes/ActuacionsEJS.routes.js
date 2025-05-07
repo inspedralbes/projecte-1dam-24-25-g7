@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
             include: [
                 { model: Tecnic, as: 'reporter', attributes: ['id', 'Tecnicname', 'firstName', 'lastName'] }, // Qui la va reportar
                 { model: Tecnic, as: 'assignedTecnic', attributes: ['id', 'Tecnicname', 'firstName', 'lastName'] }, // A qui està assignada (pot ser null)
-                { model: Actuacions, attributes: ['id', 'Date','Descripcio','TempsInvertit', 'Resolució'] }, // Nom de l'estat
+                { model: Actuacions, attributes: ['id_', 'Date','Descripcio','TempsInvertit', 'Resolució'] }, // Nom de l'estat
                 { model: Departament, attributes: ['id', 'name', 'level'] },// Nom de la prioritat
                 { model: Actuacions, attributes: ['id', 'data_actuacio','descripcio','Invested_Time','Resolucio']}
             ],

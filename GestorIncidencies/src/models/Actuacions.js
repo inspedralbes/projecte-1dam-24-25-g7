@@ -3,7 +3,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
 const Actuacions = sequelize.define('Actuacions', {
-  id_resolution: {
+  id_actuacions: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
@@ -18,15 +18,15 @@ const Actuacions = sequelize.define('Actuacions', {
   },
   investedTime: { // temps dedicat a resoldre la incidencia
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   ActuacioResolution: { // resolucion
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   idTecnic: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: true //false
   }
 
 

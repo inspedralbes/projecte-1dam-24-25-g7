@@ -29,7 +29,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Muntatge de Rutes EJS
-app.use('/Incidencias', IncidenciaEjsRoutes);
+app.use('/Incidencies', IncidenciaEjsRoutes);
 app.use('/Actuacions', ActuacionsEjsRoutes);
 app.use('/departments', DepartamentEjsRoutes); 
 
@@ -66,12 +66,12 @@ app.get('/', (req, res) => {
     const ActuacionsCancelled = await Actuacions.create({ name: 'Cancel·lada', description: 'Incidència desestimada o duplicada.' });
     console.log('Actuacio creada.');
 
-    // 2. Crear Prioritats (Departament)
-    const DepartamentLow = await Departament.create({ name: 'Baixa', level: 1 });
-    const DepartamentMedium = await Departament.create({ name: 'Mitja', level: 2 });
-    const DepartamentHigh = await Departament.create({ name: 'Alta', level: 3 });
-    const DepartamentCritical = await Departament.create({ name: 'Crítica', level: 4 });
-    console.log('Prioritats creades.');
+    // 2. Crear Departaments
+    const Departament1 = await Departament.create({ name: 'Matemàtiques'});
+    const Departament2 = await Departament.create({ name: 'Informàtica'});
+    const Departament3 = await Departament.create({ name: 'Ciències'});
+    const Departament4 = await Departament.create({ name: 'Llengues' });
+    console.log('Departaments creades.');
 
     // 3. Crear Tecnics (Tecnic) - Recorda HASHEJAR les contrasenyes en un cas real!
     const tecnic1 = await Tecnic.create({ nom: 'alvaro'});
@@ -84,7 +84,7 @@ app.get('/', (req, res) => {
        
        
         ActuacionsId: ActuacionsInProgress.id, // En progrés
-        DepartamentId: DepartamentMedium.id // Prioritat Mitja
+        DepartamentId: Departament1.id // Prioritat Mitja
     });
 
     await Incidencia.create({
@@ -93,7 +93,7 @@ app.get('/', (req, res) => {
      
         // assignedTecnicId: null, // No assignada encara
         ActuacionsId: ActuacionsOpen.id, // Oberta
-        DepartamentId: DepartamentHigh.id // Prioritat Alta
+        DepartamentId: Departament2.id // Prioritat Alta
     });
     console.log('Incidències creades.');
 

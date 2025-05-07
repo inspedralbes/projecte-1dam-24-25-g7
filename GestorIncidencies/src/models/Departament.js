@@ -11,12 +11,7 @@ const Departament = sequelize.define('Departament', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true, // Ex: 'Low', 'Medium', 'High', 'Critical'
-  },
-  level: {
-    type: DataTypes.INTEGER, // Un nivell numèric pot ser útil per ordenar
-    allowNull: false,
-    unique: true, // Ex: 1 (Low), 2 (Medium), 3 (High), 4 (Critical)
+    unique: true, // Ex: 'Mates', 'Llengues'...
   }
 }, {
   tableName: 'Departments',

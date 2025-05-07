@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
         res.render('Incidencias/list', { Incidencias });
     } catch (error) {
         console.error("Error al recuperar incidències:", error);
-        res.Actuacions(500).send('Error al recuperar incidències');
+        res.status(500).send('Error al recuperar incidències' + error.message);
     }
 });
 
@@ -29,16 +29,13 @@ router.get('/', async (req, res) => {
 router.get('/new', async (req, res) => {
     try {
         // Necessitem obtenir tots els usuaris, estats i prioritats per als desplegables del formulari
-        const [Tecnics, actuacions, departments] = await Promise.all([
-            Tecnic.findAll({ order: [['Tecnicname', 'ASC']] }),
-            Actuacions.findAll({ order: [['name', 'ASC']] }),
-            Departament.findAll({ order: [['level', 'ASC']] }) // Ordenem per nivell
-        ]);
+        const departaments = await Departament.findAll(); 
+        
         // Hauràs de crear la vista: src/views/Incidencias/new.ejs
-        res.render('Incidencias/new', { Tecnics, Actuacions, departments });
+        res.render('Incidencias/new', { departaments });
     } catch (error) {
         console.error("Error al carregar el formulari de nova incidència:", error);
-        res.Actuacions(500).send('Error al carregar el formulari de nova incidència');
+        res.status(500).send('Error al carregar el formulari de nova incidència' + error.message);
     }
 });
 
@@ -47,30 +44,23 @@ router.post('/create', async (req, res) => {
     try {
         // Recollim les dades del formulari
         // Assegura't que els 'name' dels inputs al formulari coincideixen: title, description, reporterTecnicId, assignedTecnicId, ActuacionsId, DepartamentId
-        const { title, description, reporterTecnicId, assignedTecnicId, ActuacionsId, DepartamentId } = req.body;
+        const { title, description, DepartamentId} = req.body;
 
-        // Validació bàsica (pots afegir-ne més)
-        if (!title || !description || !reporterTecnicId || !ActuacionsId || !DepartamentId) {
-            // Idealment, redirigir amb un missatge d'error
-            return res.Actuacions(400).send('Falten camps obligatoris.');
-        }
+     
 
         // Crear la incidència a la BD
         await Incidencia.create({
             title,
-            description,
-            reporterTecnicId,
-            assignedTecnicId: assignedTecnicId || null, // Permet que sigui nul si no s'assigna
-            ActuacionsId,
+            description,            
             DepartamentId
-            // createdAt s'afegeix automàticament
+            
         });
 
-        res.redirect('/Incidencias'); // Torna al llistat d'incidències
+        res.redirect('/'); // Torna al llistat d'incidències
     } catch (error) {
         console.error("Error al crear la incidència:", error);
         // Hauries d'afegir una gestió d'errors més robusta, potser redirigint al formulari amb un missatge
-        res.Actuacions(500).send('Error al crear la incidència');
+        res.status(500).send('Error al crear la incidència'+ error.message);
     }
 });
 
@@ -87,14 +77,14 @@ router.get('/:id/edit', async (req, res) => {
         ]);
 
         if (!Incidencia) {
-            return res.Actuacions(404).send('Incidència no trobada');
+            return res.status(404).send('Incidència no trobada');
         }
 
         // Hauràs de crear la vista: src/views/Incidencias/edit.ejs
         res.render('Incidencias/edit', { Incidencia, Tecnics, Actuacions, departments });
     } catch (error) {
         console.error("Error al carregar el formulari d'edició:", error);
-        res.Actuacions(500).send("Error al carregar el formulari d'edició");
+        res.status(500).send("Error al carregar el formulari d'edició");
     }
 });
 
@@ -107,12 +97,12 @@ router.post('/:id/update', async (req, res) => {
 
          // Validació bàsica
         if (!title || !description || !reporterTecnicId || !ActuacionsId || !DepartamentId) {
-           return res.Actuacions(400).send('Falten camps obligatoris.');
+           return res.status(400).send('Falten camps obligatoris.');
         }
 
         const Incidencia = await Incidencia.findByPk(IncidenciaId);
         if (!Incidencia) {
-            return res.Actuacions(404).send('Incidència no trobada per actualitzar');
+            return res.status(404).send('Incidència no trobada per actualitzar');
         }
 
         // Actualitzem els camps de la incidència
@@ -131,7 +121,7 @@ router.post('/:id/update', async (req, res) => {
         res.redirect('/Incidencias'); // Redirigim al llistat
     } catch (error) {
         console.error("Error al actualitzar la incidència:", error);
-        res.Actuacions(500).send('Error al actualitzar la incidència');
+        res.status(500).send('Error al actualitzar la incidència');
     }
 });
 
@@ -142,7 +132,7 @@ router.post('/:id/delete', async (req, res) => {
         const IncidenciaId = req.params.id;
         const Incidencia = await Incidencia.findByPk(IncidenciaId);
         if (!Incidencia) {
-            return res.Actuacions(404).send('Incidència no trobada per eliminar');
+            return res.status(404).send('Incidència no trobada per eliminar');
         }
 
         // Abans d'eliminar la incidència, podríem eliminar els comentaris associats
@@ -155,7 +145,7 @@ router.post('/:id/delete', async (req, res) => {
         res.redirect('/Incidencias'); // Redirigim al llistat
     } catch (error) {
         console.error("Error al eliminar la incidència:", error);
-        res.Actuacions(500).send('Error al eliminar la incidència');
+        res.status(500).send('Error al eliminar la incidència');
     }
 });
 
@@ -179,7 +169,7 @@ router.get('/:id', async (req, res) => {
         });
 
         if (!Incidencia) {
-            return res.Actuacions(404).send('Incidència no trobada');
+            return res.status(404).send('Incidència no trobada');
         }
 
         // Hauràs de crear la vista: src/views/Incidencias/detail.ejs
@@ -187,7 +177,7 @@ router.get('/:id', async (req, res) => {
 
     } catch (error) {
         console.error("Error al recuperar el detall de la incidència:", error);
-        res.Actuacions(500).send('Error al recuperar el detall de la incidència');
+        res.status(500).send('Error al recuperar el detall de la incidència');
     }
 });
 
@@ -206,7 +196,7 @@ router.post('/:id/Comentaris', async (req, res) => {
         // Verificar que la incidència existeix
         const Incidencia = await Incidencia.findByPk(IncidenciaId);
         if (!Incidencia) {
-            return res.Actuacions(404).send('Incidència no trobada per comentar');
+            return res.status(404).send('Incidència no trobada per comentar');
         }
 
         // Crear el comentari

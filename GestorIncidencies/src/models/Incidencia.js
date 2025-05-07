@@ -31,10 +31,11 @@ const Incidencia = sequelize.define('Incidencia', {
   },
   ActuacionsId: { // L'estat actual de la incidència
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     // Caldria posar un valor per defecte (p. ex., l'ID de 'Open')
     // defaultValue: 1, // Això depèn de l'ID que tingui l'estat 'Open'
     // references: { model: 'Actuacionses', key: 'id' }
+    
   },
   DepartamentId: { // La prioritat de la incidència
     type: DataTypes.INTEGER,

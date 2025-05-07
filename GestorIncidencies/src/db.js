@@ -24,8 +24,6 @@ const Actuacions = require('./models/Actuacions');
 
 // Definir associacions
 
-
-
 Departament.hasMany(Incidencia, { foreignKey: 'DepartamentId' });
 Incidencia.belongsTo(Departament, { foreignKey: 'DepartamentId' });
 
