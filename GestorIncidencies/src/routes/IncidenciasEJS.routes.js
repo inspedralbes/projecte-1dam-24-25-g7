@@ -54,7 +54,7 @@ router.post('/create', async (req, res) => {
             description,            
             DepartamentId
             
-        });
+        }); //miaufdgzdfgzgzgfzdf
 
         res.redirect('/'); // Torna al llistat d'incidències
     } catch (error) {
@@ -215,5 +215,5 @@ router.post('/:id/Comentaris', async (req, res) => {
     }
 });
 
-
+//h
 module.exports = router;
