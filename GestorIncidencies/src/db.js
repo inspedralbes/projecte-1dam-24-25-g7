@@ -18,7 +18,6 @@ module.exports = sequelize;
 // Importar models
 const Tecnic = require('./models/Tecnic');
 const Incidencia = require('./models/Incidencia');
-//const Status = require('./models/Status');
 const Departament = require('./models/Departament');
 const Comentari = require('./models/Comentari');
 const Actuacions = require('./models/Actuacions');
@@ -33,8 +32,13 @@ Incidencia.belongsTo(Departament, { foreignKey: 'DepartamentId' });
 Incidencia.hasMany(Comentari, { foreignKey: 'IncidenciaId' });
 Comentari.belongsTo(Incidencia, { foreignKey: 'IncidenciaId' });
 
+Incidencia.hasMany(Actuacions, {foreignKey: 'IncidenciaId'})
+Actuacions.belongsTo(Incidencia,{foreignKey: 'IncidenciaId'})
+
 Tecnic.hasMany(Incidencia, { foreignKey: 'tecnicId' });
 Incidencia.belongsTo(Tecnic, { foreignKey: 'tecnicId' });
+
+
 
 
 // Exportar sequelize i els models (opcionalment)
