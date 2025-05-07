@@ -36,10 +36,10 @@ const Actuacions = sequelize.define('Actuacions', {
 });
 
 // Associacions
-// Incident.belongsTo(User, { foreignKey: 'reporterUserId', as: 'reporter' });
-// Incident.belongsTo(User, { foreignKey: 'assignedUserId', as: 'assignedUser' });
-// Incident.belongsTo(Status, { foreignKey: 'statusId' });
-// Incident.belongsTo(Priority, { foreignKey: 'priorityId' });
-// Incident.hasMany(Comment, { foreignKey: 'incidentId' });
+// Incidencia.belongsTo(User, { foreignKey: 'reporterUserId', as: 'reporter' });
+// Incidencia.belongsTo(User, { foreignKey: 'assignedUserId', as: 'assignedUser' });
+// Incidencia.belongsTo(Actuacions, { foreignKey: 'ActuacionsId' });
+// Incidencia.belongsTo(Departament, { foreignKey: 'DepartamentId' });
+// Incidencia.hasMany(Comentari, { foreignKey: 'IncidenciaId' });
 
 module.exports = Actuacions;

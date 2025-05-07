@@ -1,8 +1,8 @@
-// src/models/Comment.js
+// src/models/Comentari.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
-const Comment = sequelize.define('Comment', {
+const Comentari = sequelize.define('Comentari', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -13,10 +13,10 @@ const Comment = sequelize.define('Comment', {
     allowNull: false, // El text del comentari és obligatori
   },
   // --- Claus Foranes ---
-  incidentId: { // A quina incidència pertany
+  IncidenciaId: { // A quina incidència pertany
     type: DataTypes.INTEGER,
     allowNull: false,
-    // references: { model: 'incidents', key: 'id' }
+    // references: { model: 'Incidencias', key: 'id' }
   },
   userId: { // Qui va escriure el comentari
     type: DataTypes.INTEGER,
@@ -24,12 +24,12 @@ const Comment = sequelize.define('Comment', {
     // references: { model: 'users', key: 'id' }
   },
 }, {
-  tableName: 'comments',
+  tableName: 'Comentaris',
   timestamps: true, // És útil saber quan es va crear/modificar un comentari
 });
 
 // Associacions
-// Comment.belongsTo(Incident, { foreignKey: 'incidentId' });
-// Comment.belongsTo(User, { foreignKey: 'userId' });
+// Comentari.belongsTo(Incidencia, { foreignKey: 'IncidenciaId' });
+// Comentari.belongsTo(User, { foreignKey: 'userId' });
 
-module.exports = Comment;
+module.exports = Comentari;

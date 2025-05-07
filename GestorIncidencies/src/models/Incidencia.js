@@ -1,8 +1,8 @@
-// src/models/Incident.js
+// src/models/Incidencia.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
-const Incident = sequelize.define('Incident', {
+const Incidencia = sequelize.define('Incidencia', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -29,32 +29,32 @@ const Incident = sequelize.define('Incident', {
     allowNull: true,
     // references: { model: 'users', key: 'id' }
   },
-  statusId: { // L'estat actual de la incidència
+  ActuacionsId: { // L'estat actual de la incidència
     type: DataTypes.INTEGER,
     allowNull: false,
     // Caldria posar un valor per defecte (p. ex., l'ID de 'Open')
     // defaultValue: 1, // Això depèn de l'ID que tingui l'estat 'Open'
-    // references: { model: 'statuses', key: 'id' }
+    // references: { model: 'Actuacionses', key: 'id' }
   },
-  priorityId: { // La prioritat de la incidència
+  DepartamentId: { // La prioritat de la incidència
     type: DataTypes.INTEGER,
     allowNull: false,
     // Caldria posar un valor per defecte (p. ex., l'ID de 'Medium')
     // defaultValue: 2, // Això depèn de l'ID que tingui la prioritat 'Medium'
-    // references: { model: 'priorities', key: 'id' }
+    // references: { model: 'departments', key: 'id' }
   },
   // Podries afegir altres camps com: location, department, affectedSystem, etc.
 
 }, {
-  tableName: 'incidents',
+  tableName: 'Incidencias',
   timestamps: true, // Afegeix createdAt i updatedAt
 });
 
 // Associacions
-// Incident.belongsTo(User, { foreignKey: 'reporterUserId', as: 'reporter' });
-// Incident.belongsTo(User, { foreignKey: 'assignedUserId', as: 'assignedUser' });
-// Incident.belongsTo(Status, { foreignKey: 'statusId' });
-// Incident.belongsTo(Priority, { foreignKey: 'priorityId' });
-// Incident.hasMany(Comment, { foreignKey: 'incidentId' });
+// Incidencia.belongsTo(User, { foreignKey: 'reporterUserId', as: 'reporter' });
+// Incidencia.belongsTo(User, { foreignKey: 'assignedUserId', as: 'assignedUser' });
+// Incidencia.belongsTo(Actuacions, { foreignKey: 'ActuacionsId' });
+// Incidencia.belongsTo(Departament, { foreignKey: 'DepartamentId' });
+// Incidencia.hasMany(Comentari, { foreignKey: 'IncidenciaId' });
 
-module.exports = Incident;
+module.exports = Incidencia;

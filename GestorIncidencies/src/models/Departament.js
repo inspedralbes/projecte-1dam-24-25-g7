@@ -1,8 +1,8 @@
-// src/models/Priority.js
+// src/models/Departament.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
-const Priority = sequelize.define('Priority', {
+const Departament = sequelize.define('Departament', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -19,10 +19,10 @@ const Priority = sequelize.define('Priority', {
     unique: true, // Ex: 1 (Low), 2 (Medium), 3 (High), 4 (Critical)
   }
 }, {
-  tableName: 'priorities',
+  tableName: 'Departments',
   timestamps: false, // Probablement no necessitem timestamps per a prioritats predefinides
 });
 
-// Priority.hasMany(Incident, { foreignKey: 'priorityId' });
+// Departament.hasMany(Incidencia, { foreignKey: 'DepartamentId' });
 
-module.exports = Priority;
+module.exports = Departament;

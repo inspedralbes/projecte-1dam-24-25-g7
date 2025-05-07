@@ -1,46 +1,43 @@
-// src/routes/ActuacionsEJS.routes.js
+// src/routes/IncidenciasEJS.routes.js
 const express = require('express');
 const router = express.Router();
 // Importa els models necessaris des de db.js (assumint l'exportació conjunta)
-const { Incidencia, Tecnic, Actuacions, Departament, Comentari} = require('../db');
-//const Actuacions = require('../models/Actuacions');
+const { Incidencia, Tecnic, Actuacions, Departament, Comentari } = require('../db');
 
-
-// Llistar Actuacions (GET /Actuacions)
+// Llistar incidències (GET /Incidencias)
 router.get('/', async (req, res) => {
     try {
         // Inclou els models relacionats per mostrar noms en lloc d'IDs
-        const Actuacions = await Actuacions.findAll({
+        const Incidencias = await Incidencia.findAll({
             include: [
                 { model: Tecnic, as: 'reporter', attributes: ['id', 'Tecnicname', 'firstName', 'lastName'] }, // Qui la va reportar
                 { model: Tecnic, as: 'assignedTecnic', attributes: ['id', 'Tecnicname', 'firstName', 'lastName'] }, // A qui està assignada (pot ser null)
                 { model: Actuacions, attributes: ['id', 'Date','Descripcio','TempsInvertit', 'Resolució'] }, // Nom de l'estat
-                { model: Departament, attributes: ['id', 'name', 'level'] },// Nom de la prioritat
-                { model: Actuacions, attributes: ['id', 'data_actuacio','descripcio','Invested_Time','Resolucio']}
+                { model: Departament, attributes: ['id', 'name', 'level'] } 
             ],
             order: [['createdAt', 'DESC']] // Ordena per data de creació, les més noves primer
         });
         // Hauràs de crear la vista: src/views/Incidencias/list.ejs
-        res.render('Actuacions/list', { Incidencias });
+        res.render('Incidencias/list', { Incidencias });
     } catch (error) {
-        console.error("Error al recuperar Actuacions:", error);
-        res.Actuacions(500).send('Error al recuperar Actuacions');
+        console.error("Error al recuperar incidències:", error);
+        res.Actuacions(500).send('Error al recuperar incidències');
     }
 });
 
-// Form per crear una Actuacio (GET /Actuacions/new)
+// Form per crear una incidència (GET /Incidencias/new)
 router.get('/new', async (req, res) => {
     try {
         // Necessitem obtenir tots els usuaris, estats i prioritats per als desplegables del formulari
-        const [Tecnics, Actuacionses, departments] = await Promise.all([
+        const [Tecnics, actuacions, departments] = await Promise.all([
             Tecnic.findAll({ order: [['Tecnicname', 'ASC']] }),
             Actuacions.findAll({ order: [['name', 'ASC']] }),
             Departament.findAll({ order: [['level', 'ASC']] }) // Ordenem per nivell
         ]);
-        // Hauràs de crear la vista: src/views/Actuacions/new.ejs
-        res.render('Actuacions/new', { Tecnics, Actuacions, departments });
+        // Hauràs de crear la vista: src/views/Incidencias/new.ejs
+        res.render('Incidencias/new', { Tecnics, Actuacions, departments });
     } catch (error) {
-        console.error("Error al carregar el formulari de nova Actuacio:", error);
+        console.error("Error al carregar el formulari de nova incidència:", error);
         res.Actuacions(500).send('Error al carregar el formulari de nova incidència');
     }
 });

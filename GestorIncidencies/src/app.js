@@ -4,18 +4,12 @@ require('dotenv').config();
 const path = require('path'); // Manté path per a les vistes i estàtics
 
 // Importa TOTS els models i sequelize des de db.js
-const { sequelize, Tecnic,  Status, Priority, Incident, Comment } = require('./db');
-
-// Rutes per API JSON (si les necessites, crea-les o adapta les antigues)
-// const incidentApiRoutes = require('./routes/incidents.routes');
-// const statusApiRoutes = require('./routes/statuses.routes');
-// const priorityApiRoutes = require('./routes/priorities.routes');
-// const userApiRoutes = require('./routes/users.routes'); // Per login, etc?
+const { sequelize, Tecnic, Departament, Incidencia, Comentari } = require('./db');
 
 // Rutes EJS (les que hem estat treballant)
-const incidentEjsRoutes = require('./routes/incidentsEJS.routes');
-const statusEjsRoutes = require('./routes/statusesEJS.routes');
-const priorityEjsRoutes = require('./routes/prioritiesEJS.routes'); // Recorda crear aquest!
+const IncidenciaEjsRoutes = require('./routes/IncidenciasEJS.routes');
+const DepartamentEjsRoutes = require('./routes/departametEJS.routes'); 
+const ActuacionsEjsRoutes = require ('./routes/ActuacionsEJS.routes');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -34,20 +28,20 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Muntatge de Rutes EJS
-app.use('/incidents', incidentEjsRoutes);
-app.use('/statuses', statusEjsRoutes);
-app.use('/priorities', priorityEjsRoutes); // Recorda crear i importar la ruta
+app.use('/Incidencias', IncidenciaEjsRoutes);
+app.use('/Actuacions', ActuacionsEjsRoutes);
+app.use('/departments', DepartamentEjsRoutes); 
 
 // Muntatge de Rutes API JSON (descomenta i ajusta si les fas servir)
-// app.use('/api/incidents', incidentApiRoutes);
-// app.use('/api/statuses', statusApiRoutes);
-// app.use('/api/priorities', priorityApiRoutes);
-// app.use('/api/users', userApiRoutes);
+// app.use('/api/Incidencias', IncidenciaApiRoutes);
+// app.use('/api/Actuacionses', ActuacionsApiRoutes);
+// app.use('/api/departments', DepartamentApiRoutes);
+// app.use('/api/Tecnics', TecnicApiRoutes);
 
 // Ruta principal (landing page)
 app.get('/', (req, res) => {
   // Pots redirigir a la llista d'incidències o mostrar una pàgina d'inici
-  // res.redirect('/incidents');
+  // res.redirect('/Incidencias');
   res.render('index'); // Renderitza src/views/index.ejs
 });
 
@@ -63,51 +57,51 @@ app.get('/', (req, res) => {
     // --- Seeding (Població inicial de dades) ---
     console.log('Poblant dades inicials (seeding)...');
 
-    // 1. Crear Estats (Status)
-    const statusOpen = await Status.create({ name: 'Obert', description: 'Incidència nova, pendent d\'assignar o revisar.' });
-    const statusInProgress = await Status.create({ name: 'En Progrés', description: 'Incidència assignada i sent treballada.' });
-    const statusResolved = await Status.create({ name: 'Resolta', description: 'Solució aplicada, pendent de confirmació pel reportador.' });
-    const statusClosed = await Status.create({ name: 'Tancada', description: 'Incidència completada i confirmada.' });
-    const statusCancelled = await Status.create({ name: 'Cancel·lada', description: 'Incidència desestimada o duplicada.' });
-    console.log('Estats creats.');
+    // 1. Crear Estats (Actuacions)
+    const ActuacionsOpen = await Actuacions.create({ name: 'Obert', description: 'Incidència nova, pendent d\'assignar o revisar.' });
+    const ActuacionsInProgress = await Actuacions.create({ name: 'En Progrés', description: 'Incidència assignada i sent treballada.' });
+    const ActuacionsResolved = await Actuacions.create({ name: 'Resolta', description: 'Solució aplicada, pendent de confirmació pel reportador.' });
+    const ActuacionsClosed = await Actuacions.create({ name: 'Tancada', description: 'Incidència completada i confirmada.' });
+    const ActuacionsCancelled = await Actuacions.create({ name: 'Cancel·lada', description: 'Incidència desestimada o duplicada.' });
+    console.log('Actuacio creada.');
 
-    // 2. Crear Prioritats (Priority)
-    const priorityLow = await Priority.create({ name: 'Baixa', level: 1 });
-    const priorityMedium = await Priority.create({ name: 'Mitja', level: 2 });
-    const priorityHigh = await Priority.create({ name: 'Alta', level: 3 });
-    const priorityCritical = await Priority.create({ name: 'Crítica', level: 4 });
+    // 2. Crear Prioritats (Departament)
+    const DepartamentLow = await Departament.create({ name: 'Baixa', level: 1 });
+    const DepartamentMedium = await Departament.create({ name: 'Mitja', level: 2 });
+    const DepartamentHigh = await Departament.create({ name: 'Alta', level: 3 });
+    const DepartamentCritical = await Departament.create({ name: 'Crítica', level: 4 });
     console.log('Prioritats creades.');
 
     // 3. Crear Tecnics (Tecnic) - Recorda HASHEJAR les contrasenyes en un cas real!
     const tecnic1 = await Tecnic.create({ nom: 'alvaro'});
     console.log('tecnic creats.');
 
-    // 4. Crear Incidències (Incident) d'exemple
-    await Incident.create({
+    // 4. Crear Incidències (Incidencia) d'exemple
+    await Incidencia.create({
         title: 'La impressora no funciona',
         description: 'La impressora del departament de comptabilitat no imprimeix. Fa un soroll estrany.',
        
        
-        statusId: statusInProgress.id, // En progrés
-        priorityId: priorityMedium.id // Prioritat Mitja
+        ActuacionsId: ActuacionsInProgress.id, // En progrés
+        DepartamentId: DepartamentMedium.id // Prioritat Mitja
     });
 
-    await Incident.create({
+    await Incidencia.create({
         title: 'Error en accedir al CRM',
         description: 'No puc entrar al sistema CRM des de les 9:00. Mostra un error 500.',
      
-        // assignedUserId: null, // No assignada encara
-        statusId: statusOpen.id, // Oberta
-        priorityId: priorityHigh.id // Prioritat Alta
+        // assignedTecnicId: null, // No assignada encara
+        ActuacionsId: ActuacionsOpen.id, // Oberta
+        DepartamentId: DepartamentHigh.id // Prioritat Alta
     });
     console.log('Incidències creades.');
 
-    // 5. Crear Comentaris (Comment) d'exemple
-    const incidents = await Incident.findAll(); // Obtenim les incidències creades
-    if (incidents.length > 0) {
-        await Comment.create({
+    // 5. Crear Comentaris (Comentari) d'exemple
+    const Incidencias = await Incidencia.findAll(); // Obtenim les incidències creades
+    if (Incidencias.length > 0) {
+        await Comentari.create({
             text: 'He reiniciat la cua d\'impressió, sembla que ara funciona. Pots confirmar?',
-            incidentId: incidents[0].id, // Comentari a la primera incidència
+            IncidenciaId: Incidencias[0].id, // Comentari a la primera incidència
          
         });
         console.log('Comentaris creats.');
@@ -118,9 +112,9 @@ app.get('/', (req, res) => {
     // Iniciar servidor Express NOMÉS DESPRÉS de sincronitzar i sembrar
     app.listen(port, () => {
       console.log(`Servidor escoltant a http://localhost:${port}`);
-      console.log('Accedeix a les incidències via web a: http://localhost:3000/incidents');
-      console.log('Accedeix als estats via web a: http://localhost:3000/statuses');
-      console.log('Accedeix a les prioritats via web a: http://localhost:3000/priorities');
+      console.log('Accedeix a les incidències via web a: http://localhost:3000/Incidencias');
+      console.log('Accedeix als estats via web a: http://localhost:3000/Actuacions');
+      console.log('Accedeix a les prioritats via web a: http://localhost:3000/departments');
     });
 
   } catch (error) {

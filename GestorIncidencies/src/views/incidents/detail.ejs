@@ -22,14 +22,14 @@
          </div>
     </div>
 
-    <div class="incident-comments" style="width: 80%; max-width: 900px; background-color: #f8f9fa; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+    <div class="incident-Comentaris" style="width: 80%; max-width: 900px; background-color: #f8f9fa; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd;">
         <h2>Comentaris</h2>
-        <% if (incident.Comments && incident.Comments.length > 0) { %>
+        <% if (incident.Comentaris && incident.Comentaris.length > 0) { %>
             <ul style="list-style: none; padding: 0;">
-                <% incident.Comments.forEach(comment => { %>
+                <% incident.Comentaris.forEach(Comentari => { %>
                     <li style="border-bottom: 1px dashed #ccc; padding-bottom: 15px; margin-bottom: 15px;">
-                        <p><%= comment.text.replace(/\n/g, '<br>') %></p>
-                        <small>Per: <strong><%= comment.User ? comment.User.username : 'N/A' %></strong> el <%= comment.createdAt.toLocaleString('ca-ES') %></small>
+                        <p><%= Comentari.text.replace(/\n/g, '<br>') %></p>
+                        <small>Per: <strong><%= Comentari.User ? Comentari.User.username : 'N/A' %></strong> el <%= Comentari.createdAt.toLocaleString('ca-ES') %></small>
                     </li>
                 <% }); %>
             </ul>
@@ -41,17 +41,17 @@
 
         <h3>Afegir Nou Comentari</h3>
         <!-- Formulari per afegir comentari -->
-        <form action="/incidents/<%= incident.id %>/comments" method="POST" class="incident-form">
+        <form action="/incidents/<%= incident.id %>/Comentaris" method="POST" class="incident-form">
             <div class="form-group">
-                <label for="comment_text">Text del Comentari:</label>
-                <textarea id="comment_text" name="text" rows="4" required></textarea>
+                <label for="Comentari_text">Text del Comentari:</label>
+                <textarea id="Comentari_text" name="text" rows="4" required></textarea>
             </div>
             <!-- IMPORTANT: Necessites l'ID de l'usuari que fa el comentari -->
             <!-- En un sistema real, aquest valor vindria de la sessió de l'usuari logat -->
             <!-- Per ara, farem un selector (temporal per proves) -->
              <div class="form-group">
-                <label for="comment_user">Usuari:</label>
-                <select id="comment_user" name="userId" required>
+                <label for="Comentari_user">Usuari:</label>
+                <select id="Comentari_user" name="userId" required>
                     <option value="" disabled selected>-- Selecciona usuari --</option>
                      <%# Hauries de passar la llista d'usuaris a aquesta vista també, o obtenir l'usuari logat %>
                      <%# Temporalment pots copiar el bucle d'usuaris del form 'new' si els passes %>

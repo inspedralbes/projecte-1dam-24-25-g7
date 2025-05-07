@@ -1,4 +1,4 @@
-// src/models/Comment.js
+// src/models/Tecnic.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
