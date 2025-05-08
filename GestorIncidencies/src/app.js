@@ -1,48 +1,27 @@
-// src/app.js
 const express = require('express');
 require('dotenv').config();
-const path = require('path'); // Manté path per a les vistes i estàtics
+const path = require('path'); 
 
-// Importa TOTS els models i sequelize des de db.js
-const { sequelize, Tecnic, Departament, Incidencia, Comentari , Actuacions} = require('./db');
+const { sequelize, Tecnic, Departament, Incidencia , Actuacions} = require('./db');
 
-// Rutes EJS (les que hem estat treballant)
 const IncidenciaEjsRoutes = require('./routes/IncidenciasEJS.routes');
 const DepartamentEjsRoutes = require('./routes/departametEJS.routes'); 
 const ActuacionsEjsRoutes = require ('./routes/ActuacionsEJS.routes');
-
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware per a formularis i JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public'))); 
 
-// Configuració de fitxers estàtics (si tens CSS, JS de frontend o imatges genèriques)
-app.use(express.static(path.join(__dirname, 'public'))); // Servirà arxius de la carpeta 'public' directament
-// Si tenies imatges específiques a public/images, pots mantenir:
-// app.use('/images', express.static(path.join(__dirname, 'public/images')));
-
-// Configuració de EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
-// Muntatge de Rutes EJS
 app.use('/Incidencias', IncidenciaEjsRoutes);
 app.use('/Actuacions', ActuacionsEjsRoutes);
 app.use('/departments', DepartamentEjsRoutes); 
 
-// Muntatge de Rutes API JSON (descomenta i ajusta si les fas servir)
-// app.use('/api/Incidencias', IncidenciaApiRoutes);
-// app.use('/api/Actuacionses', ActuacionsApiRoutes);
-// app.use('/api/departments', DepartamentApiRoutes);
-// app.use('/api/Tecnics', TecnicApiRoutes);
-
-// Ruta principal (landing page)
 app.get('/', (req, res) => {
-  // Pots redirigir a la llista d'incidències o mostrar una pàgina d'inici
-  // res.redirect('/Incidencias');
-  res.render('index'); // Renderitza src/views/index.ejs
+  res.render('index'); 
 });
 
 // Funció d'inicialització asíncrona
@@ -69,7 +48,6 @@ app.get('/', (req, res) => {
     const DepartamentLow = await Departament.create({ name: 'Baixa', level: 1 });
     const DepartamentMedium = await Departament.create({ name: 'Mitja', level: 2 });
     const DepartamentHigh = await Departament.create({ name: 'Alta', level: 3 });
-    const DepartamentCritical = await Departament.create({ name: 'Crítica', level: 4 });
     console.log('Prioritats creades.');
 
     // 3. Crear Tecnics (Tecnic) - Recorda HASHEJAR les contrasenyes en un cas real!
@@ -80,8 +58,6 @@ app.get('/', (req, res) => {
     await Incidencia.create({
         title: 'La impressora no funciona',
         description: 'La impressora del departament de comptabilitat no imprimeix. Fa un soroll estrany.',
-       
-       
         ActuacionsId: ActuacionsInProgress.id, // En progrés
         DepartamentId: DepartamentMedium.id // Prioritat Mitja
     });
@@ -96,20 +72,8 @@ app.get('/', (req, res) => {
     });
     console.log('Incidències creades.');
 
-    // 5. Crear Comentaris (Comentari) d'exemple
-    const Incidencias = await Incidencia.findAll(); // Obtenim les incidències creades
-    if (Incidencias.length > 0) {
-        await Comentari.create({
-            text: 'He reiniciat la cua d\'impressió, sembla que ara funciona. Pots confirmar?',
-            IncidenciaId: Incidencias[0].id, // Comentari a la primera incidència
-         
-        });
-        console.log('Comentaris creats.');
-    }
 
     console.log('Seeding completat.');
-
-    // Iniciar servidor Express NOMÉS DESPRÉS de sincronitzar i sembrar
     app.listen(port, () => {
       console.log(`Servidor escoltant a http://localhost:${port}`);
       console.log('Accedeix a les incidències via web a: http://localhost:3000/Incidencias');
@@ -119,6 +83,6 @@ app.get('/', (req, res) => {
 
   } catch (error) {
     console.error("Error durant la inicialització de l'aplicació:", error);
-    process.exit(1); // Atura l'aplicació si hi ha un error crític a l'inici
+    process.exit(1); 
   }
 })();

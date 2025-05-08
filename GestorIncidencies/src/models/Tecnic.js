@@ -1,16 +1,18 @@
-// src/models/Tecnic.js
+
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
 const Tecnic = sequelize.define('Tecnic', {
+  idTecnic: {
+    type: DataTypes.INTEGER,
+    allowNull: true
+  },
   nom: {
     type: DataTypes.TEXT,
-    allowNull: false, // El text del comentari és obligatori
+    allowNull: false, 
   },
-  
 }, {
   tableName: 'Tecnic',
-  timestamps: true, // És útil saber quan es va crear/modificar un comentari
 });
 
 

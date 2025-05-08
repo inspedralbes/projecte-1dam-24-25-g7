@@ -38,7 +38,7 @@
                                 <a href="/incidents/<%= incident.id %>" style="margin-right: 5px; text-decoration: none; background-color: #17a2b8; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.9em;">Detall</a>
                                 <a href="/incidents/<%= incident.id %>/edit" style="margin-right: 5px; text-decoration: none; background-color: #ffc107; color: black; padding: 3px 8px; border-radius: 3px; font-size: 0.9em;">Editar</a>
                                 <!-- Formulari per DELETE via POST -->
-                                <form action="/incidents/<%= incident.id %>/delete" method="POST" style="display: inline;" onsubmit="return confirm('Estàs segur que vols eliminar aquesta incidència i els seus comentaris?');">
+                                <form action="/incidents/<%= incident.id %>/delete" method="POST" style="display: inline;" onsubmit="return confirm('Estàs segur que vols eliminar aquesta incidència?');">
                                     <button type="submit" style="border: none; background-color: #dc3545; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.9em; cursor: pointer;">Eliminar</button>
                                 </form>
                             </td>
