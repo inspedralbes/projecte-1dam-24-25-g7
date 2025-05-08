@@ -4,7 +4,7 @@ require('dotenv').config();
 const path = require('path'); // Manté path per a les vistes i estàtics
 
 // Importa TOTS els models i sequelize des de db.js
-const { sequelize, Tecnic, Departament, Incidencia, Comentari } = require('./db');
+const { sequelize, Tecnic, Departament, Incidencia, Comentari , Actuacions} = require('./db');
 
 // Rutes EJS (les que hem estat treballant)
 const IncidenciaEjsRoutes = require('./routes/IncidenciasEJS.routes');

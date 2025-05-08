@@ -18,15 +18,15 @@ const Actuacions = sequelize.define('Actuacions', {
   },
   investedTime: { 
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   ActuacioResolution: { // resolucion
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true, //false
   },
   idTecnic: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: true
   }
 
 
