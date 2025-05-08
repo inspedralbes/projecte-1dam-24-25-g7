@@ -1,4 +1,4 @@
-// src/models/Actuacions.js
+
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
@@ -14,9 +14,9 @@ const Actuacions = sequelize.define('Actuacions', {
   },
   description: {
     type: DataTypes.TEXT,
-    allowNull: false, // Una descripció detallada és necessària
+    allowNull: false, 
   },
-  investedTime: { // temps dedicat a resoldre la incidencia
+  investedTime: { 
     type: DataTypes.INTEGER,
     allowNull: false,
   },
