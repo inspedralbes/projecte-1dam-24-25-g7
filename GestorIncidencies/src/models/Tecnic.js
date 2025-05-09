@@ -15,5 +15,4 @@ const Tecnic = sequelize.define('Tecnic', {
   tableName: 'Tecnic',
 });
 
-
 module.exports = Tecnic;

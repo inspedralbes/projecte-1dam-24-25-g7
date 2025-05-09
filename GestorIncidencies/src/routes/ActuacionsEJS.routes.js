@@ -7,11 +7,9 @@ router.get('/', async (req, res) => {
     try {
         const Actuacions = await Actuacions.findAll({
             include: [
-                { model: Tecnic, as: 'reporter', attributes: ['id', 'nom', 'firstName', 'lastName'] }, 
-                { model: Tecnic, as: 'assignedTecnic', attributes: ['id', 'nom', 'firstName', 'lastName'] }, 
+                { model: Tecnic, as: 'reporter', attributes: ['idTecnic', ]},  
                 { model: Actuacions, attributes: ['id', 'Date','Descripcio','TempsInvertit', 'Resolució'] }, 
                 { model: Departament, attributes: ['id', 'name', 'level'] },
-                { model: Actuacions, attributes: ['id', 'data_actuacio','descripcio','Invested_Time','Resolucio']},
                 {model: Incidencia, attributes: ['id',  'description', 'DepartamentId','Resolta']}
             ],
             order: [['createdAt', 'DESC']] 

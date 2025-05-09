@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
 const Departament = sequelize.define('Departament', {
-  id: {
+  DepartamentId: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
@@ -12,6 +12,12 @@ const Departament = sequelize.define('Departament', {
     allowNull: true,
     unique: true, 
   },
+
+  idTecnic: {
+    type: DataTypes.INTEGER,
+    allowNull: true
+  },
+
 }, {
   tableName: 'Departments',
   timestamps: false, 

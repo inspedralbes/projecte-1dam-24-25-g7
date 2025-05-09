@@ -14,14 +14,24 @@ const Incidencia = sequelize.define('Incidencia', {
     allowNull: false, 
   },
  
-  DepartamentId: { 
+  DepartamentId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    primaryKey: true,
   },
  
   Resolta: {
   type: DataTypes.BOOLEAN,
   allowNull: true,
+  },
+
+  idActuacio: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+  },
+
+  idTecnic: {
+    type: DataTypes.INTEGER,
+    allowNull: true
   },
 
 }, {

@@ -21,7 +21,10 @@ const Actuacions = require('./models/Actuacions');
 Departament.hasMany(Incidencia, { foreignKey: 'DepartamentId' });
 Incidencia.belongsTo(Departament, { foreignKey: 'DepartamentId' });
 
-Tecnic.hasMany(Incidencia, { foreignKey: 'tecnicId' });
-Incidencia.belongsTo(Tecnic, { foreignKey: 'tecnicId' });
+Tecnic.hasMany(Incidencia, { foreignKey: '  idTecnic' });
+Incidencia.belongsTo(Tecnic, { foreignKey: 'idTecnic' });
+
+Incidencia.hasMany(Actuacions, {foreignKey: 'IdActuacio'});
+Actuacions.belongsTo(Incidencia, {foreignKey: 'IdActuacio'});
 
 module.exports = { sequelize, Tecnic, Incidencia, Departament,Actuacions }; 
