@@ -10,30 +10,23 @@
     </div>
 
     <div class="table-container" style="width: 90%; max-width: 1200px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow-x: auto;">
-        <% if (typeof incidents !== 'undefined' && incidents.length > 0) { %>
+        <% if (typeof incidencies !== 'undefined' && incidencies.length > 0) { %>
             <table style="width: 100%; border-collapse: collapse; text-align: left;">
                 <thead>
                     <tr style="background-color: #eee;">
                         <th style="border: 1px solid #ccc; padding: 10px;">ID</th>
-                        <th style="border: 1px solid #ccc; padding: 10px;">Títol</th>
-                        <th style="border: 1px solid #ccc; padding: 10px;">Reportat per</th>
-                        <th style="border: 1px solid #ccc; padding: 10px;">Assignat a</th>
-                        <th style="border: 1px solid #ccc; padding: 10px;">Estat</th>
-                        <th style="border: 1px solid #ccc; padding: 10px;">Prioritat</th>
-                        <th style="border: 1px solid #ccc; padding: 10px;">Creat el</th>
+                        <th style="border: 1px solid #ccc; padding: 10px;">DEscripciop</th>
+                        
                         <th style="border: 1px solid #ccc; padding: 10px;">Accions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% incidents.forEach(incident => { %>
+                    
+                    <% incidencies.forEach(incident => { %>
                         <tr>
                             <td style="border: 1px solid #ccc; padding: 8px;"><%= incident.id %></td>
-                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incident.title %></td>
-                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incident.reporter ? incident.reporter.username : 'N/A' %></td>
-                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incident.assignedUser ? incident.assignedUser.username : 'No assignat' %></td>
-                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incident.Status ? incident.Status.name : 'N/A' %></td>
-                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incident.Priority ? incident.Priority.name : 'N/A' %></td>
-                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incident.createdAt.toLocaleDateString('ca-ES') %> <%= incident.createdAt.toLocaleTimeString('ca-ES') %></td>
+                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incident.description %></td>
+                            
                             <td style="border: 1px solid #ccc; padding: 8px; white-space: nowrap;">
                                 <a href="/incidents/<%= incident.id %>" style="margin-right: 5px; text-decoration: none; background-color: #17a2b8; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.9em;">Detall</a>
                                 <a href="/incidents/<%= incident.id %>/edit" style="margin-right: 5px; text-decoration: none; background-color: #ffc107; color: black; padding: 3px 8px; border-radius: 3px; font-size: 0.9em;">Editar</a>

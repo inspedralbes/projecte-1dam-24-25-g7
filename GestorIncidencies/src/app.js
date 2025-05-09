@@ -35,43 +35,34 @@ app.get('/', (req, res) => {
 
     // --- Seeding (Població inicial de dades) ---
     console.log('Poblant dades inicials (seeding)...');
+  
+    // 1. Crear departaments
+    const Dpt1 = await Departament.create({ nom: 'Mates' });
+    const Dpt2 = await Departament.create({ nom: 'Física' });
+    const Dpt3 = await Departament.create({ nom: 'llengua' });
+    
+    console.log('Departaments creats.');
 
-    // 1. Crear Estats (Actuacions)
-    const ActuacionsOpen = await Actuacions.create({ name: 'Obert', description: 'Incidència nova, pendent d\'assignar o revisar.' });
-    const ActuacionsInProgress = await Actuacions.create({ name: 'En Progrés', description: 'Incidència assignada i sent treballada.' });
-    const ActuacionsResolved = await Actuacions.create({ name: 'Resolta', description: 'Solució aplicada, pendent de confirmació pel reportador.' });
-    const ActuacionsClosed = await Actuacions.create({ name: 'Tancada', description: 'Incidència completada i confirmada.' });
-    const ActuacionsCancelled = await Actuacions.create({ name: 'Cancel·lada', description: 'Incidència desestimada o duplicada.' });
-    console.log('Actuacio creada.');
-
-    // 2. Crear Prioritats (Departament)
-    const DepartamentLow = await Departament.create({ name: 'Baixa', level: 1 });
-    const DepartamentMedium = await Departament.create({ name: 'Mitja', level: 2 });
-    const DepartamentHigh = await Departament.create({ name: 'Alta', level: 3 });
-    console.log('Prioritats creades.');
-
-    // 3. Crear Tecnics (Tecnic) - Recorda HASHEJAR les contrasenyes en un cas real!
+    // 2. Crear Tecnics (Tecnic) 
     const tecnic1 = await Tecnic.create({ nom: 'alvaro'});
     console.log('tecnic creats.');
 
-    // 4. Crear Incidències (Incidencia) d'exemple
-    await Incidencia.create({
+    // 3. Crear Incidències (Incidencia) d'exemple
+    const inc1 = await Incidencia.create({
         title: 'La impressora no funciona',
-        description: 'La impressora del departament de comptabilitat no imprimeix. Fa un soroll estrany.',
-        ActuacionsId: ActuacionsInProgress.id, // En progrés
-        DepartamentId: DepartamentMedium.id // Prioritat Mitja
+        description: 'La impressora del departament de comptabilitat no imprimeix. Fa un soroll estrany.',        
+        departamentId: Dpt1.id
     });
 
-    await Incidencia.create({
+    const inc2 = await Incidencia.create({
         title: 'Error en accedir al CRM',
         description: 'No puc entrar al sistema CRM des de les 9:00. Mostra un error 500.',
-     
-        // assignedTecnicId: null, // No assignada encara
-        ActuacionsId: ActuacionsOpen.id, // Oberta
-        DepartamentId: DepartamentHigh.id // Prioritat Alta
+        idTecnic: tecnic1.id,
+        departamentId: Dpt2.id
     });
     console.log('Incidències creades.');
-
+ 
+ 
 
     console.log('Seeding completat.');
     app.listen(port, () => {

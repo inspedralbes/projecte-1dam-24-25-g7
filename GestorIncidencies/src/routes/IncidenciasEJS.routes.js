@@ -1,21 +1,19 @@
 
 const express = require('express');
 const router = express.Router();
-const { Incidencia, Tecnic, Actuacions, Departament                                                             } = require('../db');
-
+const { Incidencia, Tecnic, Actuacions, Departament} = require('../db');
 // Llistar incidències (GET /Incidencias)
 router.get('/', async (req, res) => {
     try {
-        const Incidencia = await Incidencia.findAll({
+        const incidencies = await Incidencia.findAll({
             include: [
-                { model: Tecnic,attributes: ['idTecnic', 'nom'] }, 
-                { model: Incidencia, attributes: ['id', 'description', 'DepartamentId', 'Resolta'] },
-                { model: Actuacions, attributes: ['idActuacio','description','DepartamentId','Resolta']}, 
-                { model: Departament, attributes: ['id', 'name', 'level'] } 
+                { model: Tecnic, attributes: [ 'nom'] },                                 
+                { model: Departament, attributes: ['nom'] } 
             ],
             order: [['createdAt', 'DESC']] 
         });
-        res.render('Incidencias/list', { Incidencia });
+        console.log(incidencies)
+        res.render('incidencias/list', { incidencies });
     } catch (error) {
         console.error("Error al recuperar incidències:", error);
         res.status(500).send(`Error al recuperar la incidencia: ${error.message}`);
@@ -63,7 +61,7 @@ router.post('/create', async (req, res) => {
 router.get('/:id/edit', async (req, res) => {
     try {
         const IncidenciaId = req.params.id;
-        const [Incidencia, Tecnics, Actuacions, departments] = await Promise.all([
+        const [Incidencia, Tecnics, Actuacions, Departament] = await Promise.all([
             Incidencia.findByPk(IncidenciaId), 
             Tecnic.findAll({ order: [['nom', 'ASC']] }),
             Actuacions.findAll({ order: [['name', 'ASC']] }),
@@ -85,13 +83,12 @@ router.post('/:id/update', async (req, res) => {
     try {
         const IncidenciaId = req.params.id;
 
-        const { title, description, reporterTecnicId, assignedTecnicId, ActuacionsId, DepartamentId } = req.body;
+        const { id, description, Resolta, DepartamentId } = req.body;
 
         const Incidencia = await Incidencia.findByPk(IncidenciaId);
         if (!Incidencia) {
             return res.Actuacions(404).send('Incidència no trobada per actualitzar');
         }
-
 
         Incidencia.id = id;
         Incidencia.description = description;
@@ -131,7 +128,7 @@ router.get('/:id', async (req, res) => {
         const Incidencia = await Incidencia.findByPk(req.params.id, {
             include: [
                 { model: Tecnic, as: 'reporter', attributes: ['id', 'nom', 'firstName', 'lastName'] },
-                { model: Tecnic, as: 'assignedTecnic', attributes: ['id', 'nom', 'firstName', 'lastName'] },
+                { model: Incidencia, attributes: ['id', 'description', 'DepartamentId', 'Resolta'] },
                 { model: Actuacions, attributes: ['id', 'Date','Descripcio','TempsInvertit', 'Resolució'] },
                 { model: Departament, attributes: ['id', 'name', 'level'] },
             

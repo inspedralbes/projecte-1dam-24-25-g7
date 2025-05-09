@@ -29,7 +29,7 @@ const Actuacions = sequelize.define('Actuacions', {
     allowNull: true
   }
 }, {
-  tableName: 'actuacions',
+  tableName: 'Actuacions',
   timestamps: true,
 });
 

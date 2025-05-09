@@ -18,13 +18,13 @@ const Incidencia = require('./models/Incidencia');
 const Departament = require('./models/Departament');
 const Actuacions = require('./models/Actuacions');
 
-Departament.hasMany(Incidencia, { foreignKey: 'DepartamentId' });
-Incidencia.belongsTo(Departament, { foreignKey: 'DepartamentId' });
+Departament.hasMany(Incidencia, { foreignKey: 'idDepartament' });
+Incidencia.belongsTo(Departament, { foreignKey: 'idDepartament' });
 
-Tecnic.hasMany(Incidencia, { foreignKey: '  idTecnic' });
+Tecnic.hasMany(Incidencia, { foreignKey: 'idTecnic' });
 Incidencia.belongsTo(Tecnic, { foreignKey: 'idTecnic' });
 
-Incidencia.hasMany(Actuacions, {foreignKey: 'IdActuacio'});
-Actuacions.belongsTo(Incidencia, {foreignKey: 'IdActuacio'});
+Incidencia.hasMany(Actuacions, {foreignKey: 'idIncidencia', onDelete: 'CASCADE'});
+Actuacions.belongsTo(Incidencia, {foreignKey: 'idIncidencia',onDelete: 'CASCADE'});
 
-module.exports = { sequelize, Tecnic, Incidencia, Departament,Actuacions }; 
+module.exports = { sequelize, Tecnic,Incidencia, Departament,  Actuacions }; 
