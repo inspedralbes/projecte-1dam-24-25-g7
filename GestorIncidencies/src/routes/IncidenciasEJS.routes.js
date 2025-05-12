@@ -1,81 +1,74 @@
-
 const express = require('express');
 const router = express.Router();
 const { Incidencia, Tecnic, Actuacions, Departament} = require('../db');
-// Llistar incidències (GET /Incidencias)
+
 router.get('/', async (req, res) => {
     try {
         const incidencies = await Incidencia.findAll({
             include: [
-                { model: Tecnic, attributes: [ 'nom'] },                                 
-                { model: Departament, attributes: ['nom'] } 
+                { model: Tecnic, attributes: ['id', 'nom'] },
+                { model: Departament, attributes: ['id', 'nom'] }
             ],
-            order: [['createdAt', 'DESC']] 
+            order: [['createdAt', 'DESC']]
         });
-        console.log(incidencies)
+        console.log(incidencies);
         res.render('incidencias/list', { incidencies });
     } catch (error) {
         console.error("Error al recuperar incidències:", error);
-        res.status(500).send(`Error al recuperar la incidencia: ${error.message}`);
+        res.status(500).send(`Error al recuperar les incidències: ${error.message}`);
     }
 });
 
-// Form per crear una incidència (GET /Incidencias/new)
 router.get('/new', async (req, res) => {
     try {
-        
-        const [Tecnics, Actuacions, departments, Incidencia ] = await Incidencia.findAll([
-            Tecnic.findAll({ order: [['nom', 'ASC']] }),
-            Actuacions.findAll({ order: [['name', 'ASC']] }),
-            Departament.findAll({ order: [['level', 'ASC']] }),
-            Incidencia.findAll({order: [['id','ASC']]})
+        const [tecnics, departaments] = await Promise.all([
+            Tecnic.findAll({ attributes: ['id', 'nom'], order: [['nom', 'ASC']] }),
+            Departament.findAll({ attributes: ['id', 'nom'], order: [['nom', 'ASC']] })
         ]);
-       
-        res.render('Incidencias/new', { Tecnics, Actuacions, departments, Incidencia});
+
+        res.render('incidencias/new', { tecnics, departaments });
     } catch (error) {
         console.error("Error al carregar el formulari de nova incidència:", error);
-        res.status(500).send(`Error al carregar la incidencia: ${error.message}`);
+        res.status(500).send(`Error al carregar el formulari de nova incidència: ${error.message}`);
     }
 });
 
-// Crear incidència (POST /Incidencias/create)
 router.post('/create', async (req, res) => {
     try {
-        const { id, description,DepartamentId,Resolta } = req.body;
+        const { description, Resolta, prioritat, idTecnic, idDepartament } = req.body;
 
         await Incidencia.create({
-            id, 
             description,
-            DepartamentId,
-            Resolta
+            Resolta: Boolean(Resolta),
+            prioritat,
+            idTecnic: idTecnic ? parseInt(idTecnic) : null,
+            idDepartament: parseInt(idDepartament)
         });
 
-        res.redirect('/Incidencias'); 
+        res.redirect('/Incidencias');
     } catch (error) {
         console.error("Error al crear la incidència:", error);
-        res.status(500).send(`Error al crear la incidencia: ${error.message}`);
+        res.status(500).send(`Error al crear la incidència: ${error.message}`);
     }
 });
 
-// Form per editar una incidència (GET /Incidencias/:id/edit)
 router.get('/:id/edit', async (req, res) => {
     try {
         const IncidenciaId = req.params.id;
-        const [Incidencia, Tecnics, Actuacions, Departament] = await Promise.all([
-            Incidencia.findByPk(IncidenciaId), 
-            Tecnic.findAll({ order: [['nom', 'ASC']] }),
-            Actuacions.findAll({ order: [['name', 'ASC']] }),
-            Departament.findAll({ order: [['level', 'ASC']] })
+        const [incidencia, tecnics, departaments] = await Promise.all([
+            Incidencia.findByPk(IncidenciaId),
+            Tecnic.findAll({ attributes: ['id', 'nom'], order: [['nom', 'ASC']] }),
+            Departament.findAll({ attributes: ['id', 'nom'], order: [['nom', 'ASC']] })
         ]);
 
-        if (!Incidencia) {
-            return res.Actuacions(404).send('Incidència no trobada');
+        if (!incidencia) {
+            return res.status(404).send('Incidència no trobada');
         }
 
-        res.render('Incidencias/edit', { Incidencia, Tecnics, Actuacions, departments });
+        res.render('incidencias/edit', { incidencia, tecnics, departaments });
     } catch (error) {
-        console.error("Error al carregar el formulari d'edició:", error);
-        res.Actuacions(500).send("Error al carregar el formulari d'edició");
+        console.error("Error al carregar el formulari d'edició de incidència:", error);
+        res.status(500).send(`Error al carregar el formulari d'edició de incidència: ${error.message}`);
     }
 });
 
@@ -83,71 +76,67 @@ router.post('/:id/update', async (req, res) => {
     try {
         const IncidenciaId = req.params.id;
 
-        const { id, description, Resolta, DepartamentId } = req.body;
+        const { description, Resolta, prioritat, idTecnic, idDepartament } = req.body;
 
-        const Incidencia = await Incidencia.findByPk(IncidenciaId);
-        if (!Incidencia) {
-            return res.Actuacions(404).send('Incidència no trobada per actualitzar');
+        const incidencia = await Incidencia.findByPk(IncidenciaId);
+        if (!incidencia) {
+            return res.status(404).send('Incidència no trobada per actualitzar');
         }
 
-        Incidencia.id = id;
-        Incidencia.description = description;
-        Incidencia.Resolta = Resolta;
-        Incidencia.DepartamentId = DepartamentId;
-    
-        await Incidencia.save();
+        incidencia.description = description;
+        incidencia.Resolta = Boolean(Resolta);
+        incidencia.prioritat = prioritat;
+        incidencia.idTecnic = idTecnic ? parseInt(idTecnic) : null;
+        incidencia.idDepartament = parseInt(idDepartament);
+
+        await incidencia.save();
 
         res.redirect('/Incidencias');
     } catch (error) {
         console.error("Error al actualitzar la incidència:", error);
-        res.Actuacions(500).send('Error al actualitzar la incidència');
+        res.status(500).send(`Error al actualitzar la incidència: ${error.message}`);
     }
 });
 
-// Eliminar incidència (Canviat a POST per seguretat)
-// Necessitaràs un petit formulari a la vista list.ejs per enviar un POST a aquesta ruta
 router.post('/:id/delete', async (req, res) => {
     try {
-        const Id = req.params.id;
-        const Incidencia = await Incidencia.findByPk(Id);
-        if (!Incidencia) {
-            return res.Actuacions(404).send('Incidència no trobada per eliminar');
+        const IncidenciaId = req.params.id;
+        const incidencia = await Incidencia.findByPk(IncidenciaId);
+        if (!incidencia) {
+            return res.status(404).send('Incidència no trobada per eliminar');
         }
 
-        res.redirect('/Incidencias'); 
+        await incidencia.destroy();
+
+        res.redirect('/Incidencias');
     } catch (error) {
         console.error("Error al eliminar la incidència:", error);
-        res.Actuacions(500).send('Error al eliminar la incidència');
+        res.status(500).send(`Error al eliminar la incidència: ${error.message}`);
     }
 });
 
 
-// (GET /Incidencias/:id)
 router.get('/:id', async (req, res) => {
     try {
-        const Incidencia = await Incidencia.findByPk(req.params.id, {
+        const incidencia = await Incidencia.findByPk(req.params.id, {
             include: [
-                { model: Tecnic, as: 'reporter', attributes: ['id', 'nom', 'firstName', 'lastName'] },
-                { model: Incidencia, attributes: ['id', 'description', 'DepartamentId', 'Resolta'] },
-                { model: Actuacions, attributes: ['id', 'Date','Descripcio','TempsInvertit', 'Resolució'] },
-                { model: Departament, attributes: ['id', 'name', 'level'] },
-            
+                { model: Tecnic, attributes: ['id', 'nom'] },
+                { model: Departament, attributes: ['id', 'nom'] },
+                { model: Actuacions, attributes: ['id', 'description', 'Temps', 'Visible', 'idTecnic'] }
             ]
         });
 
-        if (!Incidencia) {
-            return res.Actuacions(404).send('Incidència no trobada');
+        if (!incidencia) {
+            return res.status(404).send('Incidència no trobada');
         }
 
-        
-        res.render('Incidencias/detail', { Incidencia });
+        res.render('incidencias/detail', { incidencia });
 
     } catch (error) {
         console.error("Error al recuperar el detall de la incidència:", error);
-        res.Actuacions(500).send('Error al recuperar el detall de la incidència');
+        res.status(500).send(`Error al recuperar el detall de la incidència: ${error.message}`);
     }
 });
-
 
 
 module.exports = router;

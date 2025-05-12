@@ -5,8 +5,8 @@
     </div>
 
     <div class="action-buttons" style="margin-bottom: 30px;">
-         <a href="/incidencias/new">Nova Incidència</a>
-         <!-- Pots afegir filtres o altres accions aquí -->
+         <a href="/Incidencias/new">Nova Incidència</a>
+         <% // Pots afegir filtres o altres accions aquí %>
     </div>
 
     <div class="table-container" style="width: 90%; max-width: 1200px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow-x: auto;">
@@ -16,22 +16,29 @@
                     <tr style="background-color: #eee;">
                         <th style="border: 1px solid #ccc; padding: 10px;">ID</th>
                         <th style="border: 1px solid #ccc; padding: 10px;">Descripció</th>
-                        
+                        <th style="border: 1px solid #ccc; padding: 10px;">Tècnic Assignat</th>
+                        <th style="border: 1px solid #ccc; padding: 10px;">Departament</th>
+                         <th style="border: 1px solid #ccc; padding: 10px;">Estat</th>
+                         <th style="border: 1px solid #ccc; padding: 10px;">Prioritat</th>
                         <th style="border: 1px solid #ccc; padding: 10px;">Accions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    
-                    <% incidencies.forEach(incidencias => { %>
+                    <% // El router passa un array anomenat incidencies (plural) %>
+                    <% incidencies.forEach(incidencia => { %> <% // Utilitzem "incidencia" (singular) per a cada element del bucle %>
                         <tr>
-                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incidencias.id %></td>
-                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incidencias.description %></td>
-                            
+                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incidencia.id %></td>
+                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incidencia.description %></td>
+                            <% // Accedim a les dades de les relacions incloses pel router %>
+                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incidencia.Tecnic ? incidencia.Tecnic.nom : 'No assignat' %></td>
+                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incidencia.Departament ? incidencia.Departament.nom : 'N/A' %></td>
+                             <td style="border: 1px solid #ccc; padding: 8px;"><%= incidencia.Resolta ? 'Resolta' : 'Pendent' %></td>
+                             <td style="border: 1px solid #ccc; padding: 8px;"><%= incidencia.prioritat || 'No especificada' %></td>
                             <td style="border: 1px solid #ccc; padding: 8px; white-space: nowrap;">
-                                <a href="/incidencias/<%= incidencias.id %>" style="margin-right: 5px; text-decoration: none; background-color: #17a2b8; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.9em;">Detall</a>
-                                <a href="/incidencias/<%= incidencias.id %>/edit" style="margin-right: 5px; text-decoration: none; background-color: #ffc107; color: black; padding: 3px 8px; border-radius: 3px; font-size: 0.9em;">Editar</a>
+                                <a href="/Incidencias/<%= incidencia.id %>" style="margin-right: 5px; text-decoration: none; background-color: #17a2b8; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.9em;">Detall</a>
+                                <a href="/Incidencias/<%= incidencia.id %>/edit" style="margin-right: 5px; text-decoration: none; background-color: #ffc107; color: black; padding: 3px 8px; border-radius: 3px; font-size: 0.9em;">Editar</a>
                                 <!-- Formulari per DELETE via POST -->
-                                <form action="/incidencias/<%= incidencias.id %>/delete" method="POST" style="display: inline;" onsubmit="return confirm('Estàs segur que vols eliminar aquesta incidència?');">
+                                <form action="/Incidencias/<%= incidencia.id %>/delete" method="POST" style="display: inline;" onsubmit="return confirm('Estàs segur que vols eliminar aquesta incidència?');">
                                     <button type="submit" style="border: none; background-color: #dc3545; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.9em; cursor: pointer;">Eliminar</button>
                                 </form>
                             </td>

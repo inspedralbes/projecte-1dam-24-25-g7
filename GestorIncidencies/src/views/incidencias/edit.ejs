@@ -1,79 +1,76 @@
-<%- include('../partials/header', { title: 'Editar Incidència #' + incidencias.id }) %>
+<%- include('../partials/header', { title: 'Editar Incidència #' + incidencia.id }) %>
 
     <div class="title-box">
-        <h1>EDITAR INCIDÈNCIA #<%= incidencias.id %></h1>
+        <h1>EDITAR INCIDÈNCIA #<%= incidencia.id %></h1>
     </div>
 
-    <form action="/incidencias/<%= incidencias.id %>/update" method="POST" class="incidencias-form" style="width: 80%; max-width: 700px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+    <form action="/Incidencias/<%= incidencia.id %>/update" method="POST" class="incidencias-form" style="width: 80%; max-width: 700px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd;">
 
-        <!-- Camp Títol pre-carregat -->
-        <div class="form-group">
-            <label for="incidencias_title">Títol breu:</label>
-            <input type="text" id="incidencias_title" name="title" required value="<%= incidencias.title %>">
-        </div>
+        <% // Eliminat el camp Títol breu, ja que no existeix al model %>
 
         <!-- Camp Descripció pre-carregat -->
         <div class="form-group">
             <label for="incidencias_desc">Descripció detallada:</label>
-            <textarea id="incidencias_desc" name="description" rows="6" required><%= incidencias.description %></textarea>
-        </div>
-
-         <!-- Camp Reportat per (pre-seleccionat) -->
-         <div class="form-group">
-            <label for="reporterUser">Reportat per:</label>
-            <select id="reporterUser" name="reporterUserId" required>
-                <option value="" disabled>-- Selecciona qui reporta --</option>
-                <% users.forEach(user => { %>
-                    <option value="<%= user.id %>" <%= incidencias.reporterUserId === user.id ? 'selected' : '' %>>
-                        <%= user.firstName %> <%= user.lastName %> (<%= user.username %>)
-                    </option>
-                <% }); %>
-            </select>
+            <textarea id="incidencias_desc" name="description" rows="6" required><%= incidencia.description %></textarea>
         </div>
 
         <!-- Camp Assignat a (pre-seleccionat, permet no assignat) -->
          <div class="form-group">
-            <label for="assignedUser">Assignat a:</label>
-            <select id="assignedUser" name="assignedUserId">
-                <option value="" <%= !incidencias.assignedUserId ? 'selected' : '' %>>-- No Assignat --</option>
-                <% users.forEach(user => { %>
-                     <% if (user.role === 'technician' || user.role === 'admin') { %>
-                        <option value="<%= user.id %>" <%= incidencias.assignedUserId === user.id ? 'selected' : '' %>>
-                            <%= user.firstName %> <%= user.lastName %> (<%= user.username %>)
-                        </option>
-                     <% } %>
+            <label for="idTecnic">Assignat a Tècnic:</label>
+            <select id="idTecnic" name="idTecnic">
+                <option value="" <%= !incidencia.idTecnic ? 'selected' : '' %>>-- No Assignat --</option>
+                <% tecnics.forEach(tecnic => { %>
+                     <% // Assumim que tecnics té id i nom %>
+                     <option value="<%= tecnic.id %>" <%= incidencia.idTecnic === tecnic.id ? 'selected' : '' %>>
+                         <%= tecnic.nom %>
+                     </option>
                 <% }); %>
             </select>
         </div>
 
-        <!-- Camp Estat (pre-seleccionat) -->
-        <div class="form-group">
-            <label for="status_incidencia">Estat:</label>
-            <select id="status_incidencia" name="statusId" required>
-                <% statuses.forEach(status => { %>
-                    <option value="<%= status.id %>" <%= incidencias.statusId === status.id ? 'selected' : '' %>>
-                        <%= status.name %>
-                    </option>
-                <% }); %>
-            </select>
-        </div>
-
-        <!-- Camp Prioritat (pre-seleccionat) -->
-        <div class="form-group">
-            <label for="priority_incidencia">Prioritat:</label>
-            <select id="priority_incidencia" name="priorityId" required>
-                 <% priorities.forEach(priority => { %>
-                     <option value="<%= priority.id %>" <%= incidencias.priorityId === priority.id ? 'selected' : '' %>>
-                         <%= priority.name %>
+        <!-- Camp Departament (pre-seleccionat) - REQUERIT pel model -->
+         <div class="form-group">
+            <label for="idDepartament">Departament:</label>
+            <select id="idDepartament" name="idDepartament" required>
+                <% // Assumim que departaments té id i nom %>
+                <% departaments.forEach(departament => { %>
+                     <option value="<%= departament.id %>" <%= incidencia.idDepartament === departament.id ? 'selected' : '' %>>
+                         <%= departament.nom %>
                      </option>
                  <% }); %>
+             </select>
+        </div>
+
+
+        <!-- Camp Estat (Checkbox Resolta) -->
+        <div class="form-group">
+            <input type="checkbox" id="incidencia_resolta" name="Resolta" value="true" <%= incidencia.Resolta ? 'checked' : '' %>>
+            <label for="incidencia_resolta">Resolta</label>
+             <% // Hidden input per enviar "false" si el checkbox no està marcat (és un workaround comú) %>
+             <% // També pots gestionar-ho al router comprovant si el camp existeix o no a req.body %>
+             <% // Però per simplicitat a la vista, afegim el hidden input %>
+             <% if (!incidencia.Resolta) { %>
+                <input type="hidden" name="Resolta" value="false">
+             <% } %>
+        </div>
+
+
+        <!-- Camp Prioritat (Dropdown) -->
+        <div class="form-group">
+            <label for="incidencia_prioritat">Prioritat:</label>
+            <select id="incidencia_prioritat" name="prioritat">
+                 <% // Opcions hardcodejades basades en l'ENUM del model Incidencia %>
+                 <option value="" <%= !incidencia.prioritat ? 'selected' : '' %> disabled>-- Selecciona Prioritat --</option>
+                 <option value="Alta" <%= incidencia.prioritat === 'Alta' ? 'selected' : '' %>>Alta</option>
+                 <option value="mitja" <%= incidencia.prioritat === 'mitja' ? 'selected' : '' %>>Mitja</option>
+                 <option value="baixa" <%= incidencia.prioritat === 'baixa' ? 'selected' : '' %>>Baixa</option>
              </select>
         </div>
 
         <!-- Botons d'acció -->
         <div class="form-group">
             <button type="submit">Actualitzar Incidència</button>
-            <a href="/incidencias" style="text-decoration: none; padding: 0.8em 1.5em; background-color: #6c757d; color: white; border-radius: 4px; font-size: 1em; margin-left: 1em;">Cancel·lar</a>
+            <a href="/Incidencias" style="text-decoration: none; padding: 0.8em 1.5em; background-color: #6c757d; color: white; border-radius: 4px; font-size: 1em; margin-left: 1em;">Cancel·lar</a>
         </div>
 
     </form>
