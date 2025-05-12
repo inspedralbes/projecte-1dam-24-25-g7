@@ -27,16 +27,12 @@ app.get('/', (req, res) => {
 // Funció d'inicialització asíncrona
 (async () => {
   try {
-    // Sincronització de la base de dades
-    // ATENCIÓ: force: true ESBORRA i RECREA les taules. Treu-ho quan tinguis dades.
+    
     console.log('Sincronitzant base de dades...');
     await sequelize.sync({ force: true });
     console.log('Base de dades sincronitzada.');
-
-    // --- Seeding (Població inicial de dades) ---
-    console.log('Poblant dades inicials (seeding)...');
   
-    // 1. Crear departaments
+    
     const Dpt1 = await Departament.create({ nom: 'Mates' });
     const Dpt2 = await Departament.create({ nom: 'Física' });
     const Dpt3 = await Departament.create({ nom: 'llengua' });
@@ -61,9 +57,6 @@ app.get('/', (req, res) => {
         departamentId: Dpt2.id
     });
     console.log('Incidències creades.');
- 
- 
-
     console.log('Seeding completat.');
     app.listen(port, () => {
       console.log(`Servidor escoltant a http://localhost:${port}`);

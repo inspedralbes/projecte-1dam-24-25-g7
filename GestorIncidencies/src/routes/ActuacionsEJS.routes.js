@@ -8,9 +8,9 @@ router.get('/', async (req, res) => {
         const Actuacions = await Actuacions.findAll({
             include: [
                 { model: Tecnic, as: 'reporter', attributes: ['idTecnic', ]},  
-                { model: Actuacions, attributes: ['id', 'Date','Descripcio','TempsInvertit', 'Resolució'] }, 
-                { model: Departament, attributes: ['id', 'name', 'level'] },
-                {model: Incidencia, attributes: ['id',  'description', 'DepartamentId','Resolta']}
+                { model: Actuacions, attributes: ['Date','Descripcio','TempsInvertit', 'Resolució'] }, 
+                { model: Departament, attributes: ['name', 'level'] },
+                {model: Incidencia, attributes: [ 'description', 'DepartamentId','Resolta']}
             ],
             order: [['createdAt', 'DESC']] 
         });
@@ -18,19 +18,19 @@ router.get('/', async (req, res) => {
         res.render('Actuacions/list', { Incidencias });
     } catch (error) {
         console.error("Error al recuperar Actuacions:", error);
-        res.Actuacions(500).send('Error al recuperar Actuacions');
+        res.status(500).send(`Error al recuperar actuacions: ${error.message}`);
     }
 });
 
 // Form per crear una Actuacio (GET /Actuacions/new)
 router.get('/new', async (req, res) => {
     try {
-        const [Tecnics, Actuacions, departments] = await Promise.all([
+        const [Tecnics, Actuacions, Departament] = await Promise.all([
             Tecnic.findAll({ order: [['nom', 'ASC']] }),
             Actuacions.findAll({ order: [['name', 'ASC']] }),
             Departament.findAll({ order: [['level', 'ASC']] }) // Ordenem per nivell
         ]);
-        res.render('Actuacions/new', { Tecnics, Actuacions, departments });
+        res.render('Actuacions/new', { Tecnics, Actuacions, Departament });
     } catch (error) {
         console.error("Error al carregar el formulari de nova Actuacio:", error);
         res.status(500).send(`Error al carregar formulari de crear la incidencia: ${error.message}`);
@@ -40,12 +40,10 @@ router.get('/new', async (req, res) => {
 // Crear incidència (POST /Incidencias/create)
 router.post('/create', async (req, res) => {
     try {
-        const { id, description, DepartamentId, Resolta } = req.body;
+        const { description, Resolta } = req.body;
 
         await Incidencia.create({
-            id,
             description,
-            DepartamentId,
             Resolta
         });
 
@@ -60,7 +58,7 @@ router.post('/create', async (req, res) => {
 router.get('/:id/edit', async (req, res) => {
     try {
         const IncidenciaId = req.params.id;
-        const [Incidencia, Tecnics, Actuacions, departments] = await Promise.all([
+        const [Incidencia, Tecnics, Actuacions, Departament] = await Promise.all([
             Incidencia.findByPk(IncidenciaId), 
             Tecnic.findAll({ order: [['nom', 'ASC']] }),
             Actuacions.findAll({ order: [['name', 'ASC']] }),
@@ -71,7 +69,7 @@ router.get('/:id/edit', async (req, res) => {
             return res.Actuacions(404).send('Incidència no trobada');
         }
 
-        res.render('Incidencias/edit', { Incidencia, Tecnics, Actuacions, departments });
+        res.render('Incidencias/edit', { Incidencia, Tecnics, Actuacions, Departament });
     } catch (error) {
         console.error("Error al carregar el formulari d'edició:", error);
         res.status(500).send(`Error al carregar el formulari d'edició: ${error.message}`);
@@ -82,7 +80,7 @@ router.get('/:id/edit', async (req, res) => {
 router.post('/:id/update', async (req, res) => {
     try {
         const IncidenciaId = req.params.id;
-        const { id, description, DepartamentId, Resolta  } = req.body;
+        const { description, DepartamentId, Resolta  } = req.body;
 
         const Incidencia = await Incidencia.findByPk(IncidenciaId);
         if (!Incidencia) {
@@ -90,7 +88,6 @@ router.post('/:id/update', async (req, res) => {
         }
 
         id, description, DepartamentId, Resolta 
-        Incidencia.id = id;
         Incidencia.description = description;
         Incidencia.DepartamentId = DepartamentId;
         Incidencia.Resolta = Resolta;

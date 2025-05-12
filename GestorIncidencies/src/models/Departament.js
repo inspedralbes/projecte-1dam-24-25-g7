@@ -2,11 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
 const Departament = sequelize.define('Departament', {
-  DepartamentId: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
+ 
   nom: {
     type: DataTypes.STRING,
     allowNull: true,

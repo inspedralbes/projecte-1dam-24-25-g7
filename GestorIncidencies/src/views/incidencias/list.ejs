@@ -5,7 +5,7 @@
     </div>
 
     <div class="action-buttons" style="margin-bottom: 30px;">
-         <a href="/incidents/new">Nova Incidència</a>
+         <a href="/incidencias/new">Nova Incidència</a>
          <!-- Pots afegir filtres o altres accions aquí -->
     </div>
 
@@ -16,22 +16,21 @@
                     <tr style="background-color: #eee;">
                         <th style="border: 1px solid #ccc; padding: 10px;">ID</th>
                         <th style="border: 1px solid #ccc; padding: 10px;">DEscripciop</th>
-                        
                         <th style="border: 1px solid #ccc; padding: 10px;">Accions</th>
                     </tr>
                 </thead>
                 <tbody>
                     
-                    <% incidencies.forEach(incident => { %>
+                    <% incidencies.forEach(incidencias => { %>
                         <tr>
-                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incident.id %></td>
-                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incident.description %></td>
+                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incidencias.id %></td>
+                            <td style="border: 1px solid #ccc; padding: 8px;"><%= incidencias.description %></td>
                             
                             <td style="border: 1px solid #ccc; padding: 8px; white-space: nowrap;">
-                                <a href="/incidents/<%= incident.id %>" style="margin-right: 5px; text-decoration: none; background-color: #17a2b8; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.9em;">Detall</a>
-                                <a href="/incidents/<%= incident.id %>/edit" style="margin-right: 5px; text-decoration: none; background-color: #ffc107; color: black; padding: 3px 8px; border-radius: 3px; font-size: 0.9em;">Editar</a>
+                                <a href="/incidencias/<%= incidencias.id %>" style="margin-right: 5px; text-decoration: none; background-color: #17a2b8; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.9em;">Detall</a>
+                                <a href="/incidencias/<%= incidencias.id %>/edit" style="margin-right: 5px; text-decoration: none; background-color: #ffc107; color: black; padding: 3px 8px; border-radius: 3px; font-size: 0.9em;">Editar</a>
                                 <!-- Formulari per DELETE via POST -->
-                                <form action="/incidents/<%= incident.id %>/delete" method="POST" style="display: inline;" onsubmit="return confirm('Estàs segur que vols eliminar aquesta incidència?');">
+                                <form action="/incidencias/<%= incidencias.id %>/delete" method="POST" style="display: inline;" onsubmit="return confirm('Estàs segur que vols eliminar aquesta incidència?');">
                                     <button type="submit" style="border: none; background-color: #dc3545; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.9em; cursor: pointer;">Eliminar</button>
                                 </form>
                             </td>

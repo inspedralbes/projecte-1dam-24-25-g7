@@ -1,16 +1,13 @@
 // src/routes/departmentsEJS.routes.js
 const express = require('express');
 const router = express.Router();
-// Importa models necessaris
-const { Departament, Incidencia } = require('../db'); // Afegim Incidencia per la validació d'eliminació
+const { Departament, Incidencia } = require('../db'); 
 
-// Llistar prioritats
 router.get('/', async (req, res) => {
     try {
-        // Ordenem per nivell directament a la consulta
         const departments = await Departament.findAll({ order: [['level', 'ASC']] });
         const errorMessage = req.query.error;
-        // Assegura't que tens la vista: src/views/departments/list.ejs
+        
         res.render('departments/list', { departments, errorMessage: errorMessage });
     } catch (error) {
         console.error("Error al recuperar prioritats:", error);

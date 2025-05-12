@@ -4,7 +4,6 @@ const sequelize = require('../db');
 
 const Incidencia = sequelize.define('Incidencia', {
 
-
   description: {
     type: DataTypes.TEXT,
     allowNull: false, 

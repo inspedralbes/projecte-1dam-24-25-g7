@@ -1,24 +1,24 @@
 <%- include('../partials/header', { title: 'Detall Incidència #' + incidencia.id }) %>
 
     <div class="title-box">
-        <h1>INCIDÈNCIA #<%= incident.id %>: <%= incident.title %></h1>
+        <h1>INCIDÈNCIA #<%= incidencias.id %>: <%= incidencias.title %></h1>
     </div>
 
-    <div class="incident-details" style="width: 80%; max-width: 900px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd; margin-bottom: 30px;">
+    <div class="incidencias-details" style="width: 80%; max-width: 900px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd; margin-bottom: 30px;">
         <h2>Detalls</h2>
-        <p><strong>Descripció:</strong><br><%= incident.description.replace(/\n/g, '<br>') %></p>
+        <p><strong>Descripció:</strong><br><%= incidencias.description.replace(/\n/g, '<br>') %></p>
         <hr>
-        <p><strong>Reportat per:</strong> <%= incident.reporter ? incident.reporter.username : 'N/A' %> (<%= incident.createdAt.toLocaleString('ca-ES') %>)</p>
-        <p><strong>Assignat a:</strong> <%= incident.assignedUser ? incident.assignedUser.username : 'No assignat' %></p>
-        <p><strong>Estat:</strong> <%= incident.Status ? incident.Status.name : 'N/A' %></p>
-        <p><strong>Prioritat:</strong> <%= incident.Priority ? incident.Priority.name : 'N/A' %></p>
-        <% if (incident.resolutionDate) { %>
-            <p><strong>Data Resolució:</strong> <%= incident.resolutionDate.toLocaleString('ca-ES') %></p>
+        <p><strong>Reportat per:</strong> <%= incidencias.reporter ? incidencias.reporter.username : 'N/A' %> (<%= incidencias.createdAt.toLocaleString('ca-ES') %>)</p>
+        <p><strong>Assignat a:</strong> <%= incidencias.assignedUser ? incidencias.assignedUser.username : 'No assignat' %></p>
+        <p><strong>Estat:</strong> <%= incidencias.Status ? incidencias.Status.name : 'N/A' %></p>
+        <p><strong>Prioritat:</strong> <%= incidencias.Priority ? incidencias.Priority.name : 'N/A' %></p>
+        <% if (incidencias.resolutionDate) { %>
+            <p><strong>Data Resolució:</strong> <%= incidencias.resolutionDate.toLocaleString('ca-ES') %></p>
         <% } %>
-        <p><strong>Última actualització:</strong> <%= incident.updatedAt.toLocaleString('ca-ES') %></p>
+        <p><strong>Última actualització:</strong> <%= incidencias.updatedAt.toLocaleString('ca-ES') %></p>
          <div style="margin-top: 20px;">
-             <a href="/incidents/<%= incident.id %>/edit" class="action-buttons" style="background-color: #ffc107; color: black; padding: 8px 15px;">Editar Incidència</a>
-             <a href="/incidents" class="action-buttons" style="background-color: #6c757d; color: white; padding: 8px 15px; margin-left: 10px;">Tornar a la Llista</a>
+             <a href="/incidencias/<%= incidencias.id %>/edit" class="action-buttons" style="background-color: #ffc107; color: black; padding: 8px 15px;">Editar Incidència</a>
+             <a href="/incidencias" class="action-buttons" style="background-color: #6c757d; color: white; padding: 8px 15px; margin-left: 10px;">Tornar a la Llista</a>
          </div>
     </div>
 

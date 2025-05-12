@@ -5,31 +5,21 @@
     </div>
 
     <!-- Utilitzem les classes i estructura del teu form_incidencia.html -->
-    <!-- El formulari apunta a la ruta POST /incidents/create -->
-    <form action="/incidencias/create" method="POST" class="incident-form" style="width: 80%; max-width: 700px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+    <!-- El formulari apunta a la ruta POST /incidenciass/create -->
+    <form action="/incidencias/create" method="POST" class="incidencias-form" style="width: 80%; max-width: 700px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd;">
 
         <!-- Camp per al Títol -->
         <div class="form-group">
-            <label for="incident_title">Títol breu:</label>
-            <input type="text" id="incident_title" name="title" required placeholder="Ex: Projector aula B15 no funciona">
+            <label for="incidencias_title">Títol breu:</label>
+            <input type="text" id="incidencias_title" name="title" required placeholder="Ex: Projector aula B15 no funciona">
         </div>
 
         <!-- Camp per a la Descripció -->
         <div class="form-group">
-            <label for="incident_desc">Descripció detallada:</label>
-            <textarea id="incident_desc" name="description" rows="6" required placeholder="Descriu el problema: què passa, on exactament, des de quan..."></textarea>
+            <label for="incidencias_desc">Descripció detallada:</label>
+            <textarea id="incidencias_desc" name="description" rows="6" required placeholder="Descriu el problema: què passa, on exactament, des de quan..."></textarea>
         </div>
 
-         <!-- Camp per seleccionar qui reporta (En un sistema real, seria l'usuari logat) -->
-         <div class="form-group">
-            <label for="reporterUser">Reportat per:</label>
-            <select id="reporterUser" name="reporterUserId" required>
-                <option value="" disabled selected>-- Selecciona qui reporta --</option>
-                <% users.forEach(user => { %>
-                    <option value="<%= user.id %>"><%= user.firstName %> <%= user.lastName %> (<%= user.username %>)</option>
-                <% }); %>
-            </select>
-        </div>
 
         <!-- Camp per seleccionar a qui s'assigna (Opcional) -->
          <div class="form-group">
@@ -42,32 +32,6 @@
                      <% } %>
                 <% }); %>
             </select>
-        </div>
-
-        <!-- Camp per a l'Estat (Status) - Podria tenir valor per defecte -->
-        <div class="form-group">
-            <label for="status_incidencia">Estat inicial:</label>
-            <select id="status_incidencia" name="statusId" required>
-                <% statuses.forEach(status => { %>
-                    <!-- Seleccionem 'Obert' per defecte si existeix -->
-                    <option value="<%= status.id %>" <%= status.name.toLowerCase() === 'obert' ? 'selected' : '' %>>
-                        <%= status.name %>
-                    </option>
-                <% }); %>
-            </select>
-        </div>
-
-        <!-- Camp per a la Prioritat (Priority) -->
-        <div class="form-group">
-            <label for="priority_incidencia">Prioritat:</label>
-            <select id="priority_incidencia" name="priorityId" required>
-                 <% priorities.forEach(priority => { %>
-                    <!-- Seleccionem 'Mitja' per defecte si existeix -->
-                     <option value="<%= priority.id %>" <%= priority.name.toLowerCase() === 'mitja' ? 'selected' : '' %>>
-                         <%= priority.name %>
-                     </option>
-                 <% }); %>
-             </select>
         </div>
 
         <!-- Botons d'acció -->
