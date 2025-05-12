@@ -1,34 +1,40 @@
+// src/models/Actuacio.js
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('../db');
+const sequelize = require('../db');
 
-const Actuacions = sequelize.define('Actuacions', {
-  description: {
+const Actuacio = sequelize.define('Actuacio', {
+  descripcio: {
     type: DataTypes.TEXT,
-    allowNull: true,
+    allowNull: false,
   },
-  Temps: {
+  temps: {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-  Visible: {
+  visible: {
     type: DataTypes.BOOLEAN,
     allowNull: true,
   },
-  idTecnic: {
+
+  incidenciaId: {
     type: DataTypes.INTEGER,
-    allowNull: true
+    allowNull: false,
+    references: {
+      model: 'Incidencies',
+      key: 'id',
+    }
   },
-  idIncidencia: {
+  tecnicId: {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: 'Incidencias',
+      model: 'Tecnic',
       key: 'id',
     }
   }
 }, {
-  tableName: 'Actuacions',
+  tableName: 'Actuacio',
   timestamps: true,
 });
 
-module.exports = Actuacions;
+module.exports = Actuacio;

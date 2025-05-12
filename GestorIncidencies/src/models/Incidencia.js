@@ -6,7 +6,8 @@ const Incidencia = sequelize.define('Incidencia', {
   description: {
     type: DataTypes.TEXT,
     allowNull: false,
-  },
+  }, 
+
   Resolta: {
     type: DataTypes.BOOLEAN,
     allowNull: true,
