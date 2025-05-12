@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Incidencia, Tecnic, Actuacions, Departament} = require('../db');
+const { Incidencia, Tecnic, Actuacions, Departament} = require('../app');
 
 router.get('/', async (req, res) => {
     try {
@@ -54,9 +54,9 @@ router.post('/create', async (req, res) => {
 
 router.get('/:id/edit', async (req, res) => {
     try {
-        const IncidenciaId = req.params.id;
+        const idIncidencia = req.params.id;
         const [incidencia, tecnics, departaments] = await Promise.all([
-            Incidencia.findByPk(IncidenciaId),
+            Incidencia.findByPk(idIncidencia),
             Tecnic.findAll({ attributes: ['id', 'nom'], order: [['nom', 'ASC']] }),
             Departament.findAll({ attributes: ['id', 'nom'], order: [['nom', 'ASC']] })
         ]);
@@ -74,11 +74,11 @@ router.get('/:id/edit', async (req, res) => {
 
 router.post('/:id/update', async (req, res) => {
     try {
-        const IncidenciaId = req.params.id;
+        const idIncidencia = req.params.id;
 
         const { description, Resolta, prioritat, idTecnic, idDepartament } = req.body;
 
-        const incidencia = await Incidencia.findByPk(IncidenciaId);
+        const incidencia = await Incidencia.findByPk(idIncidencia);
         if (!incidencia) {
             return res.status(404).send('Incidència no trobada per actualitzar');
         }
@@ -100,8 +100,8 @@ router.post('/:id/update', async (req, res) => {
 
 router.post('/:id/delete', async (req, res) => {
     try {
-        const IncidenciaId = req.params.id;
-        const incidencia = await Incidencia.findByPk(IncidenciaId);
+        const idIncidencia = req.params.id;
+        const incidencia = await Incidencia.findByPk(idIncidencia);
         if (!incidencia) {
             return res.status(404).send('Incidència no trobada per eliminar');
         }

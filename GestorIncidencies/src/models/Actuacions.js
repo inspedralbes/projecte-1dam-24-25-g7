@@ -1,6 +1,6 @@
 // src/models/Actuacio.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../db');
+const sequelize = require('../app');
 
 const Actuacio = sequelize.define('Actuacio', {
   descripcio: {
@@ -16,7 +16,7 @@ const Actuacio = sequelize.define('Actuacio', {
     allowNull: true,
   },
 
-  incidenciaId: {
+  idIncidencia: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -24,7 +24,7 @@ const Actuacio = sequelize.define('Actuacio', {
       key: 'id',
     }
   },
-  tecnicId: {
+  idTecnic: {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {

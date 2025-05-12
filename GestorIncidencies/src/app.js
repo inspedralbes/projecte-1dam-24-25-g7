@@ -19,7 +19,7 @@ Incidencia.hasMany(Actuacions, { foreignKey: 'idIncidencia',onDelete: 'CASCADE' 
 
 //RUTES
 const incidenciaEjsRoutes = require('./routes/IncidenciasEJS.routes');
-const departamentEjsRoutes = require('./routes/DepartametEJS.routes');
+const departamentEjsRoutes = require('./routes/DepartamentEJS.routes');
 const actuacioEjsRoutes = require('./routes/ActuacionsEJS.routes');
 
 const app = express();
