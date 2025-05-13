@@ -1,43 +1,36 @@
 const express = require('express');
 const router = express.Router();
-const { Incidencia, Tecnic, Actuacions, Departament} = require('../app');
 
-//llistar incidencies
+const Incidencia = require('../models/Incidencia');
+const Departament = require('../models/Departament');
+const Tecnic = require('../models/Tecnic');
+const Actuacions = require('../models/Actuacions');
+
+//llistar
 router.get('/', async (req, res) => {
     try {
-      const tecnicId = req.query.tecnic_id;
-      const whereCondition = tecnicId
-        ? { [Op.or]: [{ tecnic_id: tecnicId }, { tecnic_id: null }] }
-        : {};
-  
-        const incidencies = await Incidencia.findAll({
-          where: whereCondition,
-          include: [
-            { model: Departament,  attributes: [ 'nom'] },
-            { model: Tecnic, attributes: [ 'nom'] },
-          ]
-        });
-  
-      const tecnics = await Tecnic.findAll();
-  
-      res.render('incidencies/list', {
-        incidencies,
-        tecnics,
-        tecnic_id: parseInt(tecnicId) || null
-      });
-    } catch (error) {
-      console.error(' Error al recuperar incidències:', error);
-      res.status(500).send(`Error al recuperar incidencies: ${error.message}`);
-    }
-  });
-  
 
+        const incidencias = await Incidencia.findAll({
+            include: [
+                { model: Tecnic, attributes: ['nom'] },
+                { model: Departament, attributes: ['nom'] }
+            ],
+            order: [['createdAt', 'DESC']]
+        });
+        console.log(incidencias);
+        res.render('incidencias/list', { incidencias });
+        
+    } catch (error) {
+        console.error("Error al recuperar incidències:", error);
+        res.status(500).send(`Error al recuperar les incidències: ${error.message}`);
+    }
+});
+
+//veure
 router.get('/new', async (req, res) => {
     try {
-        const [tecnics, departaments] = await Promise.all([
-            Tecnic.findAll({ attributes: ['id', 'nom'], order: [['nom', 'ASC']] }),
-            Departament.findAll({ attributes: ['id', 'nom'], order: [['nom', 'ASC']] })
-        ]);
+        const tecnics = await Tecnic.findAll({ attributes: ['id', 'nom'], order: [['nom', 'ASC']] });
+        const departaments = await Departament.findAll({ attributes: ['id', 'nom'], order: [['nom', 'ASC']] });
 
         res.render('incidencias/new', { tecnics, departaments });
     } catch (error) {
@@ -45,6 +38,7 @@ router.get('/new', async (req, res) => {
         res.status(500).send(`Error al carregar el formulari de nova incidència: ${error.message}`);
     }
 });
+
 
 router.post('/create', async (req, res) => {
     try {

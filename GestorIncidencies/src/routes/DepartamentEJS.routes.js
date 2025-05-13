@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { Departament, Incidencia, Tecnic } = require('../db');
+
+const Incidencia = require('../models/Incidencia');
+const Departament = require('../models/Departament');
+const Tecnic = require('../models/Tecnic');
 
 router.get('/', async (req, res) => {
     try {

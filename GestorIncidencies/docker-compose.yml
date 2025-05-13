@@ -1,5 +1,5 @@
 services:
-  Incidencias-app:
+  incidencias-app:
     build: .
     container_name: Incidencias-project-1DAM
     env_file:
