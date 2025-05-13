@@ -10,7 +10,7 @@
     </div>
 
     <div class="table-container" style="width: 90%; max-width: 1200px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow-x: auto;">
-        <% if (typeof incidencies !== 'undefined' && incidencies.length > 0) { %>
+        <% if (typeof Incidencias !== 'undefined' && Incidencias.length > 0) { %>
             <table style="width: 100%; border-collapse: collapse; text-align: left;">
                 <thead>
                     <tr style="background-color: #eee;">
@@ -24,8 +24,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% // El router passa un array anomenat incidencies (plural) %>
-                    <% incidencies.forEach(incidencia => { %> <% // Utilitzem "incidencia" (singular) per a cada element del bucle %>
+                    <% // El router passa un array anomenat Incidencias (plural) %>
+                    <% Incidencias.forEach(incidencia => { %> <% // Utilitzem "incidencia" (singular) per a cada element del bucle %>
                         <tr>
                             <td style="border: 1px solid #ccc; padding: 8px;"><%= incidencia.id %></td>
                             <td style="border: 1px solid #ccc; padding: 8px;"><%= incidencia.description %></td>

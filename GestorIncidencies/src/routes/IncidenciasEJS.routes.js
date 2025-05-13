@@ -2,22 +2,35 @@ const express = require('express');
 const router = express.Router();
 const { Incidencia, Tecnic, Actuacions, Departament} = require('../app');
 
+//llistar incidencies
 router.get('/', async (req, res) => {
     try {
+      const tecnicId = req.query.tecnic_id;
+      const whereCondition = tecnicId
+        ? { [Op.or]: [{ tecnic_id: tecnicId }, { tecnic_id: null }] }
+        : {};
+  
         const incidencies = await Incidencia.findAll({
-            include: [
-                { model: Tecnic, attributes: ['id', 'nom'] },
-                { model: Departament, attributes: ['id', 'nom'] }
-            ],
-            order: [['createdAt', 'DESC']]
+          where: whereCondition,
+          include: [
+            { model: Departament,  attributes: [ 'nom'] },
+            { model: Tecnic, attributes: [ 'nom'] },
+          ]
         });
-        console.log(incidencies);
-        res.render('incidencias/list', { incidencies });
+  
+      const tecnics = await Tecnic.findAll();
+  
+      res.render('incidencies/list', {
+        incidencies,
+        tecnics,
+        tecnic_id: parseInt(tecnicId) || null
+      });
     } catch (error) {
-        console.error("Error al recuperar incidències:", error);
-        res.status(500).send(`Error al recuperar les incidències: ${error.message}`);
+      console.error(' Error al recuperar incidències:', error);
+      res.status(500).send(`Error al recuperar incidencies: ${error.message}`);
     }
-});
+  });
+  
 
 router.get('/new', async (req, res) => {
     try {

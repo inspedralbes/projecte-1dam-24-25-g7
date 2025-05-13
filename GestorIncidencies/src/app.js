@@ -37,7 +37,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/incidencies', incidenciaEjsRoutes);
+app.use('/Incidencias', incidenciaEjsRoutes);
 app.use('/actuacions', actuacioEjsRoutes);
 app.use('/departaments', departamentEjsRoutes);
 

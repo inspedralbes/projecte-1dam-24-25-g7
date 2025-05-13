@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
             include: [
                 {
                     model: Incidencia,
-                    attributes: ['id', 'description', 'Resolta', 'prioritat'],
+                    attributes: [ 'description', 'Resolta', 'prioritat'],
                     include: [
                         { model: Departament, attributes: ['id', 'nom'] },
                         { model: Tecnic, attributes: ['id', 'nom'] }
@@ -27,11 +27,11 @@ router.get('/', async (req, res) => {
 
 router.get('/new', async (req, res) => {
     try {
-        const [incidencies, tecnics] = await Promise.all([
+        const [Incidencias, tecnics] = await Promise.all([
             Incidencia.findAll({ attributes: ['id', 'description'], order: [['id', 'ASC']] }),
             Tecnic.findAll({ attributes: ['id', 'nom'], order: [['nom', 'ASC']] })
         ]);
-        res.render('actuacions/new', { incidencies, tecnics });
+        res.render('actuacions/new', { Incidencias, tecnics });
     } catch (error) {
         console.error("Error al carregar el formulari de nova Actuacio:", error);
         res.status(500).send(`Error al carregar formulari de crear l'actuació: ${error.message}`);

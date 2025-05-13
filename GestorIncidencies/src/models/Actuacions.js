@@ -7,7 +7,7 @@ const Actuacio = sequelize.define('Actuacio', {
   descripcio: {
     type: DataTypes.TEXT,
     allowNull: false,
-  },
+  }, 
   temps: {
     type: DataTypes.INTEGER,
     allowNull: true,
