@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { Op } = require('sequelize');
 
 const Incidencia = require('../models/Incidencia');
 const Departament = require('../models/Departament');
@@ -61,23 +62,29 @@ router.post('/create', async (req, res) => {
 
 router.get('/:id/edit', async (req, res) => {
     try {
-        const idIncidencia = req.params.id;
-        const [incidencia, tecnics, departaments] = await Promise.all([
-            Incidencia.findByPk(idIncidencia),
-            Tecnic.findAll({ attributes: ['id', 'nom'], order: [['nom', 'ASC']] }),
-            Departament.findAll({ attributes: ['id', 'nom'], order: [['nom', 'ASC']] })
-        ]);
+        const { id } = req.params;
 
-        if (!incidencia) {
-            return res.status(404).send('Incidència no trobada');
-        }
+        const incidencia = await Incidencia.findByPk(id);
+        if (!incidencia) return res.status(404).send('Incidència no trobada');
+
+        const tecnics = await Tecnic.findAll({
+            attributes: ['id', 'nom'],
+            order: [['nom', 'ASC']]
+        });
+
+        const departaments = await Departament.findAll({
+            attributes: ['id', 'nom'],
+            order: [['nom', 'ASC']]
+        });
 
         res.render('incidencias/edit', { incidencia, tecnics, departaments });
-    } catch (error) {
-        console.error("Error al carregar el formulari d'edició de incidència:", error);
-        res.status(500).send(`Error al carregar el formulari d'edició de incidència: ${error.message}`);
+    } catch (err) {
+        console.error("Error al carregar el formulari d'edició:", error);
+        res.status(500).send(`Error al carregar el formulari d'edició: ${error.message}`);
     }
 });
+
+
 
 router.post('/:id/update', async (req, res) => {
     try {

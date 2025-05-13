@@ -31,16 +31,23 @@ router.get('/', async (req, res) => {
 
 router.get('/new', async (req, res) => {
     try {
-        const [Incidencias, tecnics] = await Promise.all([
-            Incidencia.findAll({ attributes: ['id', 'description'], order: [['id', 'ASC']] }),
-            Tecnic.findAll({ attributes: ['id', 'nom'], order: [['nom', 'ASC']] })
-        ]);
-        res.render('actuacions/new', { Incidencias, tecnics });
-    } catch (error) {
-        console.error("Error al carregar el formulari de nova Actuacio:", error);
-        res.status(500).send(`Error al carregar formulari de crear l'actuació: ${error.message}`);
+        const incidencias = await Incidencia.findAll({
+            attributes: ['id', 'description'],
+            order: [['id', 'ASC']]
+        });
+
+        const tecnics = await Tecnic.findAll({
+            attributes: ['id', 'nom'],
+            order: [['nom', 'ASC']]
+        });
+
+        res.render('actuacions/new', { incidencias, tecnics });
+    } catch (err) {
+        console.error("Error al carregar el formulari de nova actuació:", error);
+        res.status(500).send(`Error al carregar el formulari: ${error.message}`);
     }
 });
+
 
 router.post('/create', async (req, res) => {
     try {
