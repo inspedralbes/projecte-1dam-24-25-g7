@@ -1,18 +1,18 @@
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('../app');
+const sequelize = require('../db');
+const Tecnic = require('./Tecnic');
+const Departament = require('./Departament');
 
 const Incidencia = sequelize.define('Incidencia', {
-
   description: {
     type: DataTypes.TEXT,
     allowNull: false,
-  }, 
-
+  },
   Resolta: {
     type: DataTypes.BOOLEAN,
     allowNull: true,
+    defaultValue: false,
   },
-
   prioritat: {
     type: DataTypes.ENUM('Alta', 'mitja', 'baixa'),
     allowNull: true,
@@ -21,7 +21,7 @@ const Incidencia = sequelize.define('Incidencia', {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: 'Tecnic',
+      model: Tecnic,
       key: 'id',
     }
   },
@@ -29,7 +29,7 @@ const Incidencia = sequelize.define('Incidencia', {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Departaments',
+      model: Departament,
       key: 'id',
     }
   },

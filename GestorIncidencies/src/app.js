@@ -6,7 +6,7 @@ const sequelize = require('./db');
 const Tecnic = require('./models/Tecnic');
 const Departament = require('./models/Departament');
 const Incidencia = require('./models/Incidencia');
-const Actuacions = require('./models/Actuacions');
+const Actuacio = require('./models/Actuacions');
 
 Incidencia.belongsTo(Departament, { foreignKey: 'idDepartament' });
 Departament.hasMany(Incidencia, { foreignKey: 'idDepartament' });
@@ -14,10 +14,15 @@ Departament.hasMany(Incidencia, { foreignKey: 'idDepartament' });
 Incidencia.belongsTo(Tecnic, { foreignKey: 'idTecnic'});
 Tecnic.hasMany(Incidencia, { foreignKey: 'idTecnic' });
 
-Actuacions.belongsTo(Incidencia, { foreignKey: 'idIncidencia', onDelete:'CASCADE' });
-Incidencia.hasMany(Actuacions, { foreignKey: 'idIncidencia',onDelete: 'CASCADE' });
+Actuacio.belongsTo(Incidencia, { foreignKey: 'idIncidencia', onDelete:'CASCADE' });
+Incidencia.hasMany(Actuacio, { foreignKey: 'idIncidencia',onDelete: 'CASCADE' });
 
-//RUTES
+Actuacio.belongsTo(Tecnic, { foreignKey: 'idTecnic' });
+Tecnic.hasMany(Actuacio, { foreignKey: 'idTecnic' });
+
+Departament.belongsTo(Tecnic, { foreignKey: 'idTecnic', allowNull: true });
+Tecnic.hasMany(Departament, { foreignKey: 'idTecnic' });
+
 const incidenciaEjsRoutes = require('./routes/IncidenciasEJS.routes');
 const departamentEjsRoutes = require('./routes/DepartamentEJS.routes');
 const actuacioEjsRoutes = require('./routes/ActuacionsEJS.routes');
@@ -42,49 +47,54 @@ app.get('/', (req, res) => {
 
 (async () => {
   try {
-    await sequelize.sync()
-    .then(() => {
-      console.log('base de dades sincronitzada');
-    })
-    .catch((error) => {
-      console.error('error al sincronitzar la base de dades', error);
+    await sequelize.sync({ force: true });
+    console.log('Base de dades RE-sincronitzada (force: true)');
+
+    const countDepartaments = await Departament.count();
+    if (countDepartaments === 0) {
+        console.log('Creant dades inicials...');
+        await Departament.create({
+            nom: 'Info-1',
+        });
+        await Departament.create({
+            nom: 'Info-3',
+        });
+        await Departament.create({
+            nom: 'Info-2',
+        });
+
+        await Tecnic.create({
+            nom: 'Judit Sarrat',
+        });
+        await Tecnic.create({
+            nom: 'Enrique Cayo',
+        });
+
+        const incidenciaCreada = await Incidencia.create({
+            description: 'No puc entrar al sistema CRM des de les 9:00. Mostra un error 500',
+            Resolta: false,
+            prioritat: 'baixa',
+            idTecnic: 1,
+            idDepartament: 1
+        });
+
+        await Actuacio.create({
+            descripcio: 'Ratolí ha sigut canviat',
+            temps: 15,
+            visible: true,
+            idTecnic: 1,
+            idIncidencia: incidenciaCreada.id,
+        });
+        console.log('Dades inicials creades.');
+    } else {
+         console.log('Les dades inicials ja existeixen, no es tornen a crear.');
+    }
+
+    app.listen(port, () => {
+        console.log(`Servidor escoltant a http://localhost:${port}`);
     });
-    await Departament.create({
-      nom: 'Info-1',
-      ubicacio: '2aPlanta',
-    });  
-    await Departament.create({
-      nom: 'Info-3',
-      ubicacio: '2aPlanta',
-    });  
-  await Departament.create({
-      nom: 'Info-2',
-      ubicacio: '2aPlanta',
-    });  
-  await Tecnic.create({
-    nom: 'Judit Sarrat',
-    });
-  await Tecnic.create({
-    nom: 'Enrique Cayo',
-    });
-  await Incidencia.create({   
-      description: 'No puc entrar al sistema CRM des de les 9:00. Mostra un error 500',
-      Resolta: false,
-      prioritat: 'baixa',
-      idTecnic: 1,
-      idDepartament:1
-    });  
-  await Actuacions.create({ 
-      description: 'Ratolí ha sigut canviat',
-      Temps: '15 minuts',
-      Visible: true,
-      idTecnic: 1,
-      idIncidencia: 1,
-    });  
-  app.listen(port, () => {
-    console.log(`Servidor escoltant a http://localhost:${port}`);
-  });
-} catch (error) {
-  console.error(" Error a l'inici:", error);
-}
+
+  } catch (error) {
+    console.error("Error a l'inici o durant la sincronització/seeding:", error);
+  }
 })();

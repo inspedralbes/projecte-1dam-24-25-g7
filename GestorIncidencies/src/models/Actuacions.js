@@ -1,6 +1,7 @@
-// src/models/Actuacio.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../app');
+const sequelize = require('../db');
+const Incidencia = require('./Incidencia');
+const Tecnic = require('./Tecnic');
 
 const Actuacio = sequelize.define('Actuacio', {
   descripcio: {
@@ -15,12 +16,11 @@ const Actuacio = sequelize.define('Actuacio', {
     type: DataTypes.BOOLEAN,
     allowNull: true,
   },
-
   idIncidencia: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Incidencies',
+      model: Incidencia,
       key: 'id',
     }
   },
@@ -28,7 +28,7 @@ const Actuacio = sequelize.define('Actuacio', {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: 'Tecnic',
+      model: Tecnic,
       key: 'id',
     }
   }
