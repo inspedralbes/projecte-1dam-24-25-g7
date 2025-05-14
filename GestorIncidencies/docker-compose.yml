@@ -1,7 +1,7 @@
 services:
-  incidencias-app:
+  incidencies-app:
     build: .
-    container_name: Incidencias-project-1DAM
+    container_name: incidencies-project-1DAM
     env_file:
       - .env
     volumes:
@@ -13,7 +13,7 @@ services:
 
   db:
     image: mysql:5.7
-    container_name: Incidencias-db-container
+    container_name: incidencies-db-container
     env_file:
       - .env
     environment:
@@ -22,15 +22,15 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - Incidencias_db_data:/var/lib/mysql
+      - incidencies_db_data:/var/lib/mysql
 
   adminer:
     image: adminer
-    container_name: Incidencias-adminer
+    container_name: incidencies-adminer
     depends_on:
     - db
     ports:
     - "8080:8080"
 
 volumes:
-  Incidencias_db_data:
+  incidencies_db_data:
