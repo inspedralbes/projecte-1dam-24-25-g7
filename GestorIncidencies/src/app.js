@@ -16,7 +16,7 @@ Departament.hasMany(Incidencia, { foreignKey: 'idDepartament' });
 Incidencia.belongsTo(Tecnic, { foreignKey: 'idTecnic'});
 Tecnic.hasMany(Incidencia, { foreignKey: 'idTecnic' });
 
-Actuacio.belongsTo(Incidencia, { foreignKey: 'idIncidencia', onDelete:'CASCADE' });
+Actuacio.belongsTo(Incidencia, { foreignKey: 'idIncidencia', onDelete:'CASCADE', as: 'Incidencia' }); 
 Incidencia.hasMany(Actuacio, { foreignKey: 'idIncidencia', onDelete: 'CASCADE', as: 'Actuacions' });
 
 Actuacio.belongsTo(Tecnic, { foreignKey: 'idTecnic' });

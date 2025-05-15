@@ -1,3 +1,4 @@
+<!-- src/views/actuacions/list.ejs (Sense els comentaris de depuració) -->
 <%- include('../partials/header', { title: 'Llista d\'Actuacions' }) %>
 
     <div class="title-box">
@@ -26,6 +27,7 @@
                         <th style="border: 1px solid #ccc; padding: 10px;">Incidència (ID)</th>
                         <th style="border: 1px solid #ccc; padding: 10px;">Desc. Incidència</th>
                         <th style="border: 1px solid #ccc; padding: 10px;">Tècnic Actuació</th>
+                        <th style="border: 1px solid #ccc; padding: 10px;">Accions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,9 +46,9 @@
                             </td>
                             <td style="border: 1px solid #ccc; padding: 8px;"><%= actuacio.Incidencia ? actuacio.Incidencia.descripcio : 'N/A' %></td>
                             <td style="border: 1px solid #ccc; padding: 8px;"><%= actuacio.Tecnic ? actuacio.Tecnic.nom : 'No assignat' %></td>
-                            <!-- <td style="border: 1px solid #ccc; padding: 8px; white-space: nowrap;"> -->
-                                <!-- <a href="/actuacions/<%= actuacio.id %>/edit">Editar</a> -->
-                            <!-- </td> -->
+                            <td style="border: 1px solid #ccc; padding: 8px; white-space: nowrap;">
+                                <a href="/actuacions/<%= actuacio.id %>/edit" style="margin-right: 5px; text-decoration: none; background-color: #ffc107; color: black; padding: 3px 8px; border-radius: 3px; font-size: 0.9em;">Editar</a>
+                            </td>
                         </tr>
                     <% }); %>
                 </tbody>
