@@ -1,4 +1,7 @@
-Autors: Enrique Cayo i Judit Sarrat
+Grup 7 | Autors: Enrique Cayo i Judit Sarrat
+
+## Objectiu del projecte
+En aquest primer projecte crearem una aplicació web de gestió d'Incidencies per un institut. Es una aplicació sense registre d'usuaris pero amb tecnic els quals son associats ha incidencies de x departament per solucionar-la, i documentar-la mitjançant una actuació.
 
 ## Links importants
 
