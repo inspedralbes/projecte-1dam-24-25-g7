@@ -1,16 +1,17 @@
+// src/models/Incidencia.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 const Tecnic = require('./Tecnic');
 const Departament = require('./Departament');
 
 const Incidencia = sequelize.define('Incidencia', {
-  description: {
+  descripcio: {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  Resolta: {
+  resolta: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    //allowNull: true,
     defaultValue: false,
   },
   prioritat: {
@@ -34,7 +35,7 @@ const Incidencia = sequelize.define('Incidencia', {
     }
   },
 }, {
-  tableName: 'Incidencias',
+  tableName: 'Incidencies',
   timestamps: true,
 });
 

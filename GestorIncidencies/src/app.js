@@ -1,3 +1,4 @@
+// src/app.js
 const express = require('express');
 require('dotenv').config();
 const path = require('path');
@@ -6,8 +7,9 @@ const sequelize = require('./db');
 const Tecnic = require('./models/Tecnic');
 const Departament = require('./models/Departament');
 const Incidencia = require('./models/Incidencia');
-const Actuacio = require('./models/Actuacions');
+const Actuacio = require('./models/Actuacio');
 
+// --- ASSOCIACIONS ---
 Incidencia.belongsTo(Departament, { foreignKey: 'idDepartament' });
 Departament.hasMany(Incidencia, { foreignKey: 'idDepartament' });
 
@@ -15,7 +17,7 @@ Incidencia.belongsTo(Tecnic, { foreignKey: 'idTecnic'});
 Tecnic.hasMany(Incidencia, { foreignKey: 'idTecnic' });
 
 Actuacio.belongsTo(Incidencia, { foreignKey: 'idIncidencia', onDelete:'CASCADE' });
-Incidencia.hasMany(Actuacio, { foreignKey: 'idIncidencia',onDelete: 'CASCADE' });
+Incidencia.hasMany(Actuacio, { foreignKey: 'idIncidencia', onDelete: 'CASCADE', as: 'Actuacions' });
 
 Actuacio.belongsTo(Tecnic, { foreignKey: 'idTecnic' });
 Tecnic.hasMany(Actuacio, { foreignKey: 'idTecnic' });
@@ -23,9 +25,9 @@ Tecnic.hasMany(Actuacio, { foreignKey: 'idTecnic' });
 Departament.belongsTo(Tecnic, { foreignKey: 'idTecnic', allowNull: true });
 Tecnic.hasMany(Departament, { foreignKey: 'idTecnic' });
 
-const incidenciaEjsRoutes = require('./routes/IncidenciasEJS.routes');
-const departamentEjsRoutes = require('./routes/DepartamentEJS.routes');
-const actuacioEjsRoutes = require('./routes/ActuacionsEJS.routes');
+const incidenciesEjsRoutes = require('./routes/IncidenciesEJS.routes.js');
+const departamentEjsRoutes = require('./routes/DepartamentEJS.routes.js');
+const actuacionsEjsRoutes = require('./routes/ActuacionsEJS.routes.js');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -37,8 +39,8 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/Incidencias', incidenciaEjsRoutes);
-app.use('/actuacions', actuacioEjsRoutes);
+app.use('/incidencies', incidenciesEjsRoutes);
+app.use('/actuacions', actuacionsEjsRoutes);
 app.use('/departaments', departamentEjsRoutes);
 
 app.get('/', (req, res) => {
@@ -71,8 +73,8 @@ app.get('/', (req, res) => {
         });
 
         const incidenciaCreada = await Incidencia.create({
-            description: 'No puc entrar al sistema CRM des de les 9:00. Mostra un error 500',
-            Resolta: false,
+            descripcio: 'No puc entrar al sistema CRM des de les 9:00. Mostra un error 500',
+            resolta: false,
             prioritat: 'baixa',
             idTecnic: 1,
             idDepartament: 1

@@ -1,27 +1,28 @@
+// src/routes/ActuacionsEJS.routes.js
 const express = require('express');
 const router = express.Router();
 
 const Incidencia = require('../models/Incidencia');
 const Departament = require('../models/Departament');
 const Tecnic = require('../models/Tecnic');
-const Actuacions = require('../models/Actuacions');
+const Actuacio = require('../models/Actuacio');
 
 router.get('/', async (req, res) => {
     try {
-        const actuacionsList = await Actuacions.findAll({
+        const actuacionsList = await Actuacio.findAll({
             include: [
                 {
                     model: Incidencia,
-                    attributes: [ 'description', 'Resolta', 'prioritat'],
+                    attributes: [ 'descripcio', 'resolta', 'prioritat'],
                     include: [
                         { model: Departament, attributes: ['id', 'nom'] },
                         { model: Tecnic, attributes: ['id', 'nom'] }
                     ]
                 },
+                { model: Tecnic, attributes: ['id', 'nom'] }
             ],
             order: [['createdAt', 'DESC']]
         });
-
         res.render('actuacions/list', { actuacions: actuacionsList });
     } catch (error) {
         console.error("Error al recuperar actuacions:", error);
@@ -32,7 +33,7 @@ router.get('/', async (req, res) => {
 router.get('/new', async (req, res) => {
     try {
         const incidencias = await Incidencia.findAll({
-            attributes: ['id', 'description'],
+            attributes: ['id', 'descripcio'],
             order: [['id', 'ASC']]
         });
 
@@ -40,33 +41,38 @@ router.get('/new', async (req, res) => {
             attributes: ['id', 'nom'],
             order: [['nom', 'ASC']]
         });
-
-        res.render('actuacions/new', { incidencias, tecnics });
+        const errorMessage = req.query.error;
+        res.render('actuacions/new', { incidencias, tecnics, errorMessage });
     } catch (err) {
-        console.error("Error al carregar el formulari de nova actuació:", error);
-        res.status(500).send(`Error al carregar el formulari: ${error.message}`);
+        console.error("Error al carregar el formulari de nova actuació:", err);
+        res.status(500).send(`Error al carregar el formulari: ${err.message}`);
     }
 });
 
-
 router.post('/create', async (req, res) => {
     try {
-        const { description, Temps, Visible, idTecnic, idIncidencia } = req.body;
+        const { descripcio_actuacio, temps_actuacio, visible_actuacio, idTecnic, idIncidencia } = req.body;
 
-        await Actuacions.create({
-            description,
-            Temps: parseInt(Temps),
-            Visible: Boolean(Visible),
-            idTecnic: parseInt(idTecnic),
+        if (!descripcio_actuacio || descripcio_actuacio.trim() === "") {
+            return res.redirect('/actuacions/new?error=' + encodeURIComponent('La descripció de l\'actuació és obligatòria.'));
+        }
+         if (!idIncidencia) {
+            return res.redirect('/actuacions/new?error=' + encodeURIComponent('Cal seleccionar una incidència.'));
+        }
+
+        await Actuacio.create({
+            descripcio: descripcio_actuacio.trim(),
+            temps: temps_actuacio ? parseInt(temps_actuacio) : null,
+            visible: Boolean(visible_actuacio),
+            idTecnic: idTecnic ? parseInt(idTecnic) : null,
             idIncidencia: parseInt(idIncidencia)
         });
 
-        res.redirect('/Actuacions');
+        res.redirect('/actuacions');
     } catch (error) {
         console.error("Error al crear l'actuació:", error);
         res.status(500).send(`Error al crear l'actuació: ${error.message}`);
     }
 });
-
 
 module.exports = router;

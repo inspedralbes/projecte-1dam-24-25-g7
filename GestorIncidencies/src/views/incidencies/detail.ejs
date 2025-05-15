@@ -1,0 +1,41 @@
+<%- include('../partials/header', { title: 'Detall Incidència #' + incidencia.id }) %>
+
+    <div class="title-box">
+        <h1>INCIDÈNCIA #<%= incidencia.id %></h1>
+    </div>
+
+    <div class="incidencias-details" style="width: 80%; max-width: 900px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd; margin-bottom: 30px;">
+        <h2>Detalls</h2>
+        <p><strong>Descripció:</strong><br><%= incidencia.descripcio.replace(/\n/g, '<br>') %></p> <!-- camp: incidencia.descripcio -->
+        <hr>
+        <p><strong>Data de creació:</strong> <%= new Date(incidencia.createdAt).toLocaleString('ca-ES') %></p>
+        <p><strong>Última actualització:</strong> <%= new Date(incidencia.updatedAt).toLocaleString('ca-ES') %></p>
+        <p><strong>Assignat a Tècnic:</strong> <%= incidencia.Tecnic ? incidencia.Tecnic.nom : 'No assignat' %></p>
+        <p><strong>Departament:</strong> <%= incidencia.Departament ? incidencia.Departament.nom : 'N/A' %></p>
+        <p><strong>Estat (Resolta):</strong> <%= incidencia.resolta ? 'Sí' : 'No' %></p> <!-- camp: incidencia.resolta -->
+        <p><strong>Prioritat:</strong> <%= incidencia.prioritat ? incidencia.prioritat : 'No especificada' %></p> <!-- camp: incidencia.prioritat -->
+
+        <h3>Actuacions:</h3>
+        <% if (incidencia.Actuacions && incidencia.Actuacions.length > 0) { %> <!-- Accés a 'incidencia.Actuacions' per l'àlies -->
+            <ul style="list-style: none; padding: 0;">
+                <% incidencia.Actuacions.forEach(actuacio => { %>
+                    <li style="border-bottom: 1px dashed #eee; padding: 10px 0;">
+                        <strong>ID Actuació:</strong> <%= actuacio.id %><br>
+                        <strong>Descripció:</strong> <%= actuacio.descripcio %><br> <!-- camp: actuacio.descripcio -->
+                        <strong>Temps dedicat (min):</strong> <%= actuacio.temps || 'N/A' %><br> <!-- camp: actuacio.temps -->
+                        <strong>Visible:</strong> <%= actuacio.visible ? 'Sí' : 'No' %><br> <!-- camp: actuacio.visible -->
+                        <strong>Realitzada per:</strong> <%= actuacio.Tecnic ? actuacio.Tecnic.nom : 'N/A' %>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p>No hi ha actuacions registrades per a aquesta incidència.</p>
+        <% } %>
+
+         <div style="margin-top: 20px;">
+             <a href="/incidencies/<%= incidencia.id %>/edit" class="action-buttons" style="background-color: #ffc107; color: black; padding: 8px 15px;">Editar Incidència</a>
+             <a href="/incidencies" class="action-buttons" style="background-color: #6c757d; color: white; padding: 8px 15px; margin-left: 10px;">Tornar a la Llista</a>
+         </div>
+    </div>
+
+<%- include('../partials/footer') %>

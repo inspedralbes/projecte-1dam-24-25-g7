@@ -1,3 +1,4 @@
+// src/models/Actuacio.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 const Incidencia = require('./Incidencia');
@@ -7,7 +8,7 @@ const Actuacio = sequelize.define('Actuacio', {
   descripcio: {
     type: DataTypes.TEXT,
     allowNull: false,
-  }, 
+  },
   temps: {
     type: DataTypes.INTEGER,
     allowNull: true,

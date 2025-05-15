@@ -1,3 +1,4 @@
+// src/models/Departament.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
