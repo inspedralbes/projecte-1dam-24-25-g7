@@ -24,3 +24,7 @@ En aquest primer projecte crearem una aplicació web de gestió d'Incidencies pe
 
 ## Esquema de pantalles Admin
 ![Esquema de pantalles Admin](Diagrames/Esquema_de_pantalles_Admin.png)
+
+## Esquema d'arquitectura del sistema 
+![Esquema d'arquitectura Sistemes](Diagrames/Arquitectura_de_sistema.drawio.png)
+
