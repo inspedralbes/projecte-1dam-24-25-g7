@@ -3,13 +3,18 @@ const express = require('express');
 require('dotenv').config();
 const path = require('path');
 const sequelize = require('./db');
+const connectDB = require('./mongo_db');
 
 const Tecnic = require('./models/Tecnic');
 const Departament = require('./models/Departament');
 const Incidencia = require('./models/Incidencia');
 const Actuacio = require('./models/Actuacio');
 
-// --- ASSOCIACIONS ---
+connectDB();
+
+const RegistreAcces = require('./models_mongodb/RegistreAcces');
+
+// --- ASSOCIACIONS SEQUELIZE ---
 Incidencia.belongsTo(Departament, { foreignKey: 'idDepartament' });
 Departament.hasMany(Incidencia, { foreignKey: 'idDepartament' });
 
@@ -25,9 +30,11 @@ Tecnic.hasMany(Actuacio, { foreignKey: 'idTecnic' });
 Departament.belongsTo(Tecnic, { foreignKey: 'idTecnic', allowNull: true });
 Tecnic.hasMany(Departament, { foreignKey: 'idTecnic' });
 
+// Rutes per a les vistes EJS (Sequelize)
 const incidenciesEjsRoutes = require('./routes/IncidenciesEJS.routes.js');
 const departamentEjsRoutes = require('./routes/DepartamentEJS.routes.js');
 const actuacionsEjsRoutes = require('./routes/ActuacionsEJS.routes.js');
+const estadistiquesRoutes = require('./routes/Estadistiques.routes.js');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -39,9 +46,26 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// MONGODB
+app.use(async (req, res, next) => {
+    res.on('finish', async () => {
+        try {
+            const entradaRegistre = new RegistreAcces({
+                ruta: req.originalUrl,
+            });
+            await entradaRegistre.save();
+        } catch (err) {
+            console.error('Error en registrar l\'accés a MongoDB:', err);
+        }
+    });
+    next();
+});
+
+// Rutes principals de l'aplicació
 app.use('/incidencies', incidenciesEjsRoutes);
 app.use('/actuacions', actuacionsEjsRoutes);
 app.use('/departaments', departamentEjsRoutes);
+app.use('/estadistiques', estadistiquesRoutes);
 
 app.get('/', (req, res) => {
   res.render('index');
@@ -50,27 +74,17 @@ app.get('/', (req, res) => {
 (async () => {
   try {
     await sequelize.sync({ force: true });
-    console.log('Base de dades RE-sincronitzada (force: true)');
+    console.log('Base de dades MySQL RE-sincronitzada (force: true)');
 
     const countDepartaments = await Departament.count();
     if (countDepartaments === 0) {
-        console.log('Creant dades inicials...');
-        await Departament.create({
-            nom: 'Info-1',
-        });
-        await Departament.create({
-            nom: 'Info-3',
-        });
-        await Departament.create({
-            nom: 'Info-2',
-        });
+        console.log('Creant dades inicials per a MySQL...');
+        await Departament.create({ nom: 'Info-1' });
+        await Departament.create({ nom: 'Info-3' });
+        await Departament.create({ nom: 'Info-2' });
 
-        await Tecnic.create({
-            nom: 'Judit Sarrat',
-        });
-        await Tecnic.create({
-            nom: 'Enrique Cayo',
-        });
+        await Tecnic.create({ nom: 'Judit Sarrat' });
+        await Tecnic.create({ nom: 'Enrique Cayo' });
 
         const incidenciaCreada = await Incidencia.create({
             descripcio: 'No puc entrar al sistema CRM des de les 9:00. Mostra un error 500',
@@ -87,9 +101,9 @@ app.get('/', (req, res) => {
             idTecnic: 1,
             idIncidencia: incidenciaCreada.id,
         });
-        console.log('Dades inicials creades.');
+        console.log('Dades inicials de MySQL creades.');
     } else {
-         console.log('Les dades inicials ja existeixen, no es tornen a crear.');
+         console.log('Les dades inicials de MySQL ja existeixen, no es tornen a crear.');
     }
 
     app.listen(port, () => {
@@ -97,6 +111,6 @@ app.get('/', (req, res) => {
     });
 
   } catch (error) {
-    console.error("Error a l'inici o durant la sincronització/seeding:", error);
+    console.error("Error a l'inici o durant la sincronització/seeding de MySQL:", error);
   }
 })();
