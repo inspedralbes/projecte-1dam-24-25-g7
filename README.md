@@ -28,3 +28,5 @@ En aquest primer projecte crearem una aplicació web de gestió d'Incidencies pe
 ## Esquema d'arquitectura del sistema 
 ![Esquema d'arquitectura Sistemes](Diagrames/Arquitectura_de_sistema.drawio.png)
 
+## Documentació d'anglés 
+![Guia d'usuaris en anglés](Diagrames/Documentació d'usuari en anglés.pdf)
