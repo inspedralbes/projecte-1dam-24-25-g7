@@ -13,7 +13,7 @@ En aquest primer projecte crearem una aplicació web de gestió d'Incidencies pe
 
 ## Diagrama Entitat-Relació
 
-![Esquema Entitat-Relació](Diagrames/Entitat_Relació.jpg)
+![Esquema Entitat-Relació](Diagrames/Diagrama_entitat_relació.png)
 
 ## Diagrama de Casos d'Ús
 
