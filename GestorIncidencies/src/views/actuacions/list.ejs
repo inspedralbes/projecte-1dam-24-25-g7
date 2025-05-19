@@ -1,62 +1,72 @@
 <%- include('../partials/header', { title: 'Llista d\'Actuacions' }) %>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">LLISTA D'ACTUACIONS</h1>
-        <a href="/actuacions/new" class="btn btn-success">Nova Actuació</a>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0 title-box-custom" style="font-size: 1.8rem; padding: 1rem 1.5rem; display: inline-block;">LLISTA D'ACTUACIONS</h1>
+    <a href="/actuacions/new" class="btn btn-rosa btn-lg">Nova Actuació</a>
+</div>
+
+<% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+    <div class="alert alert-danger" role="alert">
+        <%= errorMessage %>
     </div>
+<% } %>
 
-    <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
-        <div class="alert alert-danger" role="alert">
-            <%= errorMessage %>
-        </div>
-    <% } %>
-
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <% if (typeof actuacions !== 'undefined' && actuacions.length > 0) { %>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="table-light">
+<div class="card card-custom">
+    <div class="card-body p-0">
+        <% if (typeof actuacions !== 'undefined' && actuacions.length > 0) { %>
+            <div class="table-responsive">
+                <table class="table table-hover table-custom mb-0">
+                    <thead class="table-rosa">
+                        <tr>
+                            <th scope="col" class="py-3 px-3">ID Act.</th>
+                            <th scope="col" class="py-3 px-3">Descripció Actuació</th>
+                            <th scope="col" class="py-3 px-3">Temps (min)</th>
+                            <th scope="col" class="py-3 px-3">Visible</th>
+                            <th scope="col" class="py-3 px-3">Incidència (ID)</th>
+                            <th scope="col" class="py-3 px-3">Desc. Incidència</th>
+                            <th scope="col" class="py-3 px-3">Tècnic Actuació</th>
+                            <th scope="col" class="py-3 px-3 text-end">Accions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% actuacions.forEach(actuacio => { %>
                             <tr>
-                                <th scope="col">ID Act.</th>
-                                <th scope="col">Descripció Actuació</th>
-                                <th scope="col">Temps (min)</th>
-                                <th scope="col">Visible</th>
-                                <th scope="col">Incidència (ID)</th>
-                                <th scope="col">Desc. Incidència</th>
-                                <th scope="col">Tècnic Actuació</th>
-                                <th scope="col">Accions</th>
+                                <td class="py-3 px-3"><%= actuacio.id %></td>
+                                <td class="py-3 px-3"><%= actuacio.descripcio %></td>
+                                <td class="py-3 px-3"><%= actuacio.temps || 'N/A' %></td>
+                                <td class="py-3 px-3"><%= actuacio.visible ? 'Sí' : 'No' %></td>
+                                <td class="py-3 px-3">
+                                    <% if (actuacio.Incidencia) { %>
+                                        <a href="/incidencies/<%= actuacio.Incidencia.id %>"><%= actuacio.Incidencia.id %></a>
+                                    <% } else if (actuacio.Incidencium) { %> {/* Fallback per si l'àlies és Incidencium */%>
+                                        <a href="/incidencies/<%= actuacio.Incidencium.id %>"><%= actuacio.Incidencium.id %></a>
+                                    <% } else { %>
+                                        N/A
+                                    <% } %>
+                                </td>
+                                <td class="py-3 px-3">
+                                    <% if (actuacio.Incidencia) { %>
+                                        <%= actuacio.Incidencia.descripcio %>
+                                    <% } else if (actuacio.Incidencium) { %> {/* Fallback */%>
+                                        <%= actuacio.Incidencium.descripcio %>
+                                    <% } else { %>
+                                        N/A
+                                    <% } %>
+                                </td>
+                                <td class="py-3 px-3"><%= actuacio.Tecnic ? actuacio.Tecnic.nom : 'No assignat' %></td>
+                                <td class="py-3 px-3 text-end">
+                                    <a href="/actuacions/<%= actuacio.id %>/edit" class="btn btn-sm btn-warning" title="Editar">Editar</a>
+                                    <!-- Futur botó/formulari per eliminar -->
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <% actuacions.forEach(actuacio => { %>
-                                <tr>
-                                    <td><%= actuacio.id %></td>
-                                    <td><%= actuacio.descripcio %></td>
-                                    <td><%= actuacio.temps || 'N/A' %></td>
-                                    <td><%= actuacio.visible ? 'Sí' : 'No' %></td>
-                                    <td>
-                                        <% if (actuacio.Incidencia) { %>
-                                            <a href="/incidencies/<%= actuacio.Incidencia.id %>"><%= actuacio.Incidencia.id %></a>
-                                        <% } else { %>
-                                            N/A
-                                        <% } %>
-                                    </td>
-                                    <td><%= actuacio.Incidencia ? actuacio.Incidencia.descripcio : 'N/A' %></td>
-                                    <td><%= actuacio.Tecnic ? actuacio.Tecnic.nom : 'No assignat' %></td>
-                                    <td>
-                                        <a href="/actuacions/<%= actuacio.id %>/edit" class="btn btn-warning btn-sm">Editar</a>
-                                        <!-- Aquí podria anar un formulari per ELIMINAR actuacions si ho implementes -->
-                                    </td>
-                                </tr>
-                            <% }); %>
-                        </tbody>
-                    </table>
-                </div>
-            <% } else { %>
-                <p class="text-center">No hi ha actuacions per mostrar.</p>
-            <% } %>
-        </div>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        <% } else { %>
+            <p class="text-center p-4">No hi ha actuacions per mostrar.</p>
+        <% } %>
     </div>
+</div>
 
 <%- include('../partials/footer') %>
