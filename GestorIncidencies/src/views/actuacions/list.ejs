@@ -1,8 +1,8 @@
 <%- include('../partials/header', { title: 'Llista d\'Actuacions' }) %>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="mb-0 title-box-custom" style="font-size: 1.8rem; padding: 1rem 1.5rem; display: inline-block;">LLISTA D'ACTUACIONS</h1>
-    <a href="/actuacions/new" class="btn btn-rosa btn-lg">Nova Actuació</a>
+    <h1 class="mb-0 page-title">LLISTA D'ACTUACIONS</h1>
+    <a href="/actuacions/new" class="btn btn-rosa">Nova Actuació</a>
 </div>
 
 <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
@@ -11,12 +11,12 @@
     </div>
 <% } %>
 
-<div class="card card-custom">
+<div class="card shadow-sm">
     <div class="card-body p-0">
         <% if (typeof actuacions !== 'undefined' && actuacions.length > 0) { %>
             <div class="table-responsive">
-                <table class="table table-hover table-custom mb-0">
-                    <thead class="table-rosa">
+                <table class="table table-hover mb-0">
+                    <thead class="table-custom-header">
                         <tr>
                             <th scope="col" class="py-3 px-3">ID Act.</th>
                             <th scope="col" class="py-3 px-3">Descripció Actuació</th>
@@ -32,31 +32,21 @@
                         <% actuacions.forEach(actuacio => { %>
                             <tr>
                                 <td class="py-3 px-3"><%= actuacio.id %></td>
-                                <td class="py-3 px-3"><%= actuacio.descripcio %></td>
+                                <td class="py-3 px-3"><%= actuacio.descripcio.substring(0,60) %><% if (actuacio.descripcio.length > 60) {%>...<%}%></td>
                                 <td class="py-3 px-3"><%= actuacio.temps || 'N/A' %></td>
                                 <td class="py-3 px-3"><%= actuacio.visible ? 'Sí' : 'No' %></td>
                                 <td class="py-3 px-3">
-                                    <% if (actuacio.Incidencia) { %>
-                                        <a href="/incidencies/<%= actuacio.Incidencia.id %>"><%= actuacio.Incidencia.id %></a>
-                                    <% } else if (actuacio.Incidencium) { %> {/* Fallback per si l'àlies és Incidencium */%>
-                                        <a href="/incidencies/<%= actuacio.Incidencium.id %>"><%= actuacio.Incidencium.id %></a>
+                                    <% let incidenciaInfo = actuacio.Incidencia || actuacio.Incidencium; %>
+                                    <% if (incidenciaInfo) { %>
+                                        <a href="/incidencies/<%= incidenciaInfo.id %>"><%= incidenciaInfo.id %></a>
                                     <% } else { %>
                                         N/A
                                     <% } %>
                                 </td>
-                                <td class="py-3 px-3">
-                                    <% if (actuacio.Incidencia) { %>
-                                        <%= actuacio.Incidencia.descripcio %>
-                                    <% } else if (actuacio.Incidencium) { %> {/* Fallback */%>
-                                        <%= actuacio.Incidencium.descripcio %>
-                                    <% } else { %>
-                                        N/A
-                                    <% } %>
-                                </td>
+                                <td class="py-3 px-3"><%= incidenciaInfo ? incidenciaInfo.descripcio.substring(0,50) : 'N/A' %><% if (incidenciaInfo && incidenciaInfo.descripcio.length > 50) {%>...<%}%></td>
                                 <td class="py-3 px-3"><%= actuacio.Tecnic ? actuacio.Tecnic.nom : 'No assignat' %></td>
                                 <td class="py-3 px-3 text-end">
-                                    <a href="/actuacions/<%= actuacio.id %>/edit" class="btn btn-sm btn-warning" title="Editar">Editar</a>
-                                    <!-- Futur botó/formulari per eliminar -->
+                                    <a href="/actuacions/<%= actuacio.id %>/edit" class="btn btn-sm btn-outline-success" title="Editar">Editar</a>
                                 </td>
                             </tr>
                         <% }); %>

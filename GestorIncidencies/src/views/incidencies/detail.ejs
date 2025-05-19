@@ -1,56 +1,52 @@
 <%- include('../partials/header', { title: 'Detall Incidència #' + incidencia.id }) %>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="mb-0 title-box-custom" style="font-size: 1.8rem; padding: 1rem 1.5rem; display: inline-block;">INCIDÈNCIA #<%= incidencia.id %></h1>
+    <h1 class="mb-0 page-title">INCIDÈNCIA #<%= incidencia.id %></h1>
     <div>
-        <a href="/incidencies/<%= incidencia.id %>/edit" class="btn btn-warning btn-lg me-2">Editar Incidència</a>
-        <a href="/incidencies" class="btn btn-secondary btn-lg">Tornar a la Llista</a>
+        <a href="/incidencies/<%= incidencia.id %>/edit" class="btn btn-warning me-2">Editar Incidència</a>
+        <a href="/incidencies" class="btn btn-secondary">Tornar a la Llista</a>
     </div>
 </div>
 
-<div class="card card-custom mb-4">
-    <div class="card-header">
-        <h2 class="h5 mb-0 py-2">Detalls de la Incidència</h2>
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-custom-card-header">
+        <h5 class="mb-0 py-1">Detalls de la Incidència</h5>
     </div>
     <div class="card-body p-4">
         <div class="mb-3">
-            <h5>Descripció:</h5>
-            <p class="lead" style="white-space: pre-wrap;"><%- incidencia.descripcio %></p> {/* white-space: pre-wrap per respectar salts de línia i espais */}
+            <h6 class="text-muted">Descripció:</h6>
+            <p class="fs-5" style="white-space: pre-wrap;"><%- incidencia.descripcio %></p>
         </div>
         <hr>
         <div class="row g-3">
             <div class="col-md-6">
-                <p class="mb-1"><strong>Data de creació:</strong></p>
-                <p><%= new Date(incidencia.createdAt).toLocaleString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) %></p>
-                <p class="mb-1"><strong>Última actualització:</strong></p>
-                <p><%= new Date(incidencia.updatedAt).toLocaleString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) %></p>
+                <p class="mb-1"><small class="text-muted">Data de creació:</small><br><%= new Date(incidencia.createdAt).toLocaleString('ca-ES', { dateStyle: 'long', timeStyle: 'short' }) %></p>
+                <p class="mb-1"><small class="text-muted">Última actualització:</small><br><%= new Date(incidencia.updatedAt).toLocaleString('ca-ES', { dateStyle: 'long', timeStyle: 'short' }) %></p>
             </div>
             <div class="col-md-6">
-                <p class="mb-1"><strong>Assignat a Tècnic:</strong></p>
-                <p><%= incidencia.Tecnic ? incidencia.Tecnic.nom : 'No assignat' %></p>
-                <p class="mb-1"><strong>Departament:</strong></p>
-                <p><%= incidencia.Departament ? incidencia.Departament.nom : 'N/A' %></p>
+                <p class="mb-1"><small class="text-muted">Assignat a Tècnic:</small><br><%= incidencia.Tecnic ? incidencia.Tecnic.nom : 'No assignat' %></p>
+                <p class="mb-1"><small class="text-muted">Departament:</small><br><%= incidencia.Departament ? incidencia.Departament.nom : 'N/A' %></p>
             </div>
         </div>
         <hr>
         <div class="row">
             <div class="col-md-6">
-                <p class="mb-1"><strong>Estat:</strong> 
+                <p class="mb-1"><small class="text-muted">Estat:</small><br>
                     <% if (incidencia.resolta) { %>
-                        <span class="badge fs-6 bg-accent-menta">Resolta</span>
+                        <span class="badge fs-6 bg-estat-resolta">Resolta</span>
                     <% } else { %>
-                        <span class="badge fs-6 bg-rosa-fosc">Pendent</span>
+                        <span class="badge fs-6 bg-estat-pendent">Pendent</span>
                     <% } %>
                 </p>
             </div>
             <div class="col-md-6">
-                <p class="mb-1"><strong>Prioritat:</strong> 
+                <p class="mb-1"><small class="text-muted">Prioritat:</small><br>
                     <% if (incidencia.prioritat === 'Alta') { %>
                         <span class="badge fs-6 bg-danger"><%= incidencia.prioritat %></span>
                     <% } else if (incidencia.prioritat === 'mitja') { %>
                         <span class="badge fs-6 bg-warning text-dark"><%= incidencia.prioritat %></span>
                     <% } else if (incidencia.prioritat === 'baixa') { %>
-                        <span class="badge fs-6 bg-secondary"><%= incidencia.prioritat %></span>
+                        <span class="badge fs-6 bg-info text-dark"><%= incidencia.prioritat %></span>
                     <% } else { %>
                         <span class="badge fs-6 bg-light text-dark">No especificada</span>
                     <% } %>
@@ -60,11 +56,11 @@
     </div>
 </div>
 
-<div class="card card-custom">
-    <div class="card-header">
-        <h3 class="h5 mb-0 py-2">Actuacions Registrades</h3>
+<div class="card shadow-sm">
+    <div class="card-header bg-custom-card-header">
+        <h5 class="mb-0 py-1">Actuacions Registrades</h5>
     </div>
-    <div class="card-body p-0"> {/* p-0 si la llista ocupa tot */}
+    <div class="card-body p-0">
         <% if (incidencia.Actuacions && incidencia.Actuacions.length > 0) { %>
             <ul class="list-group list-group-flush">
                 <% incidencia.Actuacions.forEach(actuacio => { %>

@@ -2,16 +2,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
 
 :root {
-    --color-principal-rosa: #FFC0CB; /* Rosa Pastís Principal */
+    --bs-primary-rgb: 255, 192, 203;
+    --bs-primary: #FFC0CB;
     --color-rosa-clar: #FFDDE1;
     --color-rosa-fosc: #FFAAB7;
     --color-accent-menta: #C1FFD7;
-    --color-accent-lavanda: #E0C1FF;
-    --color-fons-clar: #FFF5F8; /* Un blanc rosat molt suau per al fons */
-    --color-text-fosc: #5D4037; /* Un marró fosc per a text, contrasta bé amb pastissos */
+    --color-fons-clar: #FFF5F8;
+    --color-text-fosc: #5D4037;
     --color-text-clar: #7D5A50;
     --color-vora-suau: #FFE4E8;
-    --color-ombra: rgba(200, 150, 160, 0.15); /* Ombra amb un toc rosat */
+    --color-ombra-suau: rgba(150, 100, 110, 0.1);
 }
 
 * {
@@ -33,125 +33,73 @@ body {
     min-height: 100vh;
 }
 
-main.container { /* Assegura't que el teu <main> té la classe container */
+main.container {
     flex-grow: 1;
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
 }
 
-/* Header Personalitzat */
-.navbar { /* Sobreescriu Bootstrap per al header */
-    background-color: var(--color-rosa-clar) !important; /* Important per sobreescriure bg-light */
+.navbar.bg-custom-header {
+    background-color: var(--color-rosa-clar);
     border-bottom: 1px solid var(--color-vora-suau);
-    padding-top: 0.8rem;
-    padding-bottom: 0.8rem;
 }
 
+.navbar .navbar-brand,
 .navbar .navbar-brand .header-institute-name {
-    color: var(--color-text-fosc);
+    color: var(--color-text-fosc) !important;
     font-weight: 700;
 }
 
-.navbar .nav-link.btn {
-    border-color: var(--color-rosa-fosc);
-    color: var(--color-rosa-fosc);
+.navbar .nav-link {
+    color: var(--color-text-fosc) !important;
     font-weight: 600;
 }
-
-.navbar .nav-link.btn:hover {
-    background-color: var(--color-rosa-fosc);
-    color: white;
+.navbar .nav-link:hover, 
+.navbar .nav-link:focus {
+    color: var(--color-principal-rosa) !important;
 }
-
-
-/* Title Box Personalitzat */
-.title-box-custom {
-    background-color: white;
-    padding: 2rem 2.5rem;
-    border-radius: 12px;
-    box-shadow: 0 6px 12px var(--color-ombra);
-    margin-bottom: 2.5rem;
-    text-align: center;
-    border: 1px solid var(--color-vora-suau);
-}
-
-.title-box-custom h1 {
-    color: var(--color-principal-rosa);
+.navbar .nav-link.active {
+    color: var(--color-principal-rosa) !important;
     font-weight: 700;
-    font-size: 2.2em;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
-/* Botons d'Acció Personalitzats */
-.action-buttons-custom a.btn-rosa,
-.action-buttons-custom button.btn-rosa {
+
+.page-title {
+    color: var(--color-text-fosc);
+    font-weight: 700;
+    text-shadow: 1px 1px 2px var(--color-ombra-suau);
+}
+
+/* Botons */
+.btn-rosa {
     background-color: var(--color-principal-rosa);
     border-color: var(--color-principal-rosa);
-    color: var(--color-text-fosc); /* O white si prefereixes més contrast */
-    font-weight: 600;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    color: var(--color-text-fosc);
 }
-
-.action-buttons-custom a.btn-rosa:hover,
-.action-buttons-custom button.btn-rosa:hover {
+.btn-rosa:hover, .btn-rosa:focus {
     background-color: var(--color-rosa-fosc);
     border-color: var(--color-rosa-fosc);
     color: white;
-    box-shadow: 0 4px 8px var(--color-ombra);
-    transform: translateY(-2px);
 }
 
-.action-buttons-custom a.btn-accent,
-.action-buttons-custom button.btn-accent {
-    background-color: var(--color-accent-menta);
-    border-color: var(--color-accent-menta);
-    color: var(--color-text-fosc);
-    font-weight: 600;
-}
-.action-buttons-custom a.btn-accent:hover,
-.action-buttons-custom button.btn-accent:hover {
-    background-color: #aeecc5; /* Un pèl més fosc */
-    border-color: #aeecc5;
-}
-
-
-/* Targetes (Cards) Personalitzades */
-.card-custom {
+.card {
     border: 1px solid var(--color-vora-suau);
-    border-radius: 12px;
-    box-shadow: 0 6px 12px var(--color-ombra);
+    box-shadow: 0 4px 8px var(--color-ombra-suau);
 }
-.card-custom .card-header {
+.card-header.bg-custom-card-header {
     background-color: var(--color-rosa-clar);
     border-bottom: 1px solid var(--color-vora-suau);
     color: var(--color-text-fosc);
-    font-weight: 600;
-    padding: 1rem 1.5rem;
-}
-.card-custom .card-body {
-    padding: 1.5rem;
 }
 
-/* Taules Personalitzades */
-.table-custom {
-    border: 1px solid var(--color-vora-suau);
-}
-.table-custom thead.table-rosa th {
+.table thead.table-custom-header th {
     background-color: var(--color-rosa-clar);
     color: var(--color-text-fosc);
+    border-bottom-width: 2px;
     border-color: var(--color-vora-suau);
 }
-.table-custom tbody tr:hover {
+.table-hover tbody tr:hover {
     background-color: var(--color-fons-clar);
 }
-.table-custom td, .table-custom th {
-    border-top: 1px solid var(--color-vora-suau);
-    vertical-align: middle;
-}
 
-/* Formularis Personalitzats */
 .form-control:focus, .form-select:focus {
     border-color: var(--color-principal-rosa);
     box-shadow: 0 0 0 0.25rem var(--color-rosa-clar);
@@ -161,38 +109,26 @@ main.container { /* Assegura't que el teu <main> té la classe container */
     border-color: var(--color-principal-rosa);
 }
 
-/* Badges Personalitzats */
-.badge.bg-rosa-clar {
-    background-color: var(--color-rosa-clar) !important;
-    color: var(--color-text-fosc) !important;
-}
-.badge.bg-rosa-fosc {
-    background-color: var(--color-rosa-fosc) !important;
-    color: white !important;
-}
-.badge.bg-accent-menta {
+.badge.bg-estat-resolta {
     background-color: var(--color-accent-menta) !important;
     color: var(--color-text-fosc) !important;
 }
-
-
-/* Footer Personalitzat */
-.footer-custom { /* Sobreescriu Bootstrap per al footer */
-    background-color: var(--color-text-fosc) !important; /* Utilitzant el marró fosc */
-    color: var(--color-fons-clar); /* Text clar per contrast */
-    padding: 1.5rem 0;
-    margin-top: auto; /* Empeny el footer cap avall */
+.badge.bg-estat-pendent {
+    background-color: var(--color-rosa-fosc) !important;
+    color: white !important;
 }
-.footer-custom p strong {
+
+.footer {
+    background-color: var(--color-text-fosc);
+    color: var(--color-fons-clar);
+}
+.footer p strong {
     color: var(--color-principal-rosa);
 }
 
-
-/* Estils per al pop-up de cookies (els teus existents) */
 .hidden {
-  display: none !important; /* Important per sobreescriure altres estils */
+  display: none !important;
 }
-
 .cookie-card {
   position: fixed;
   bottom: 20px;
@@ -201,34 +137,23 @@ main.container { /* Assegura't que el teu <main> té la classe container */
   padding: 1.5rem;
   background-color: #fff;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  z-index: 1050; /* Per estar per sobre d'altres elements de Bootstrap */
+  box-shadow: 0 10px 25px var(--color-ombra-suau);
+  z-index: 1050;
   border: 1px solid var(--color-vora-suau);
+  color: var(--color-text-clar);
 }
-
 .cookie-card .title {
   font-weight: 600;
   font-size: 1.2rem;
   color: var(--color-text-fosc);
   margin-bottom: 0.5rem;
 }
-
-.cookie-card .description {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  color: var(--color-text-clar);
-}
-
 .cookie-card .description a {
   color: var(--color-principal-rosa);
-  text-decoration: underline;
 }
-
 .cookie-card .description a:hover {
   color: var(--color-rosa-fosc);
 }
-
 .cookie-card .actions {
   display: flex;
   align-items: center;
@@ -236,31 +161,19 @@ main.container { /* Assegura't que el teu <main> té la classe container */
   margin-top: 1.5rem;
   gap: 0.5rem;
 }
-
 .cookie-card .pref {
   font-size: 0.8rem;
   color: var(--color-text-fosc);
   text-decoration: underline;
   border: none;
   background-color: transparent;
-  padding: 0.625rem 0.5rem;
 }
-
 .cookie-card .pref:hover {
   color: var(--color-principal-rosa);
 }
-
 .cookie-card .accept {
   font-size: 0.8rem;
-  background-color: var(--color-principal-rosa);
   font-weight: 600;
   border-radius: 0.5rem;
-  color: white; /* O var(--color-text-fosc) per a millor contrast */
   padding: 0.625rem 1.25rem;
-  border: none;
-  transition: background-color 0.2s ease;
-}
-
-.cookie-card .accept:hover {
-  background-color: var(--color-rosa-fosc);
 }
