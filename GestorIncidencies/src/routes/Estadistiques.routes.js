@@ -3,14 +3,13 @@ const express = require('express');
 const router = express.Router();
 const RegistreAcces = require('../models_mongodb/RegistreAcces');
 
-// Ruta principal per al panell d'estadístiques d'accés
+
 router.get('/accessos', async (req, res) => {
     try {
         const { dataInici, dataFi, rutaFilter } = req.query;
 
         let filtreMongo = {};
 
-        // Construir filtre per data
         if (dataInici || dataFi) {
             filtreMongo.timestamp = {};
             if (dataInici) {
@@ -25,18 +24,14 @@ router.get('/accessos', async (req, res) => {
             }
         }
         if (rutaFilter && rutaFilter.trim() !== "") {
-            filtreMongo.ruta = { $regex: rutaFilter.trim(), $options: "i" }; // Cerca insensible a majúscules/minúscules
+            filtreMongo.ruta = { $regex: rutaFilter.trim(), $options: "i" }; 
         }
 
-        // 1. Nombre d'accessos totals (amb filtre aplicat)
+       
         const totalAccessos = await RegistreAcces.countDocuments(filtreMongo);
-
-        // 2. Llistat dels últims N accessos (amb filtre aplicat)
         const ultimsAccessos = await RegistreAcces.find(filtreMongo)
             .sort({ timestamp: -1 })
             .limit(50);
-
-        // 3. Pàgines més visitades (amb filtre aplicat)
         const pipelinePagines = [];
         if (Object.keys(filtreMongo).length > 0) { 
             pipelinePagines.push({ $match: filtreMongo });
