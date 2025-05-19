@@ -14,7 +14,7 @@ connectDB();
 
 const RegistreAcces = require('./models_mongodb/RegistreAcces');
 
-// --- ASSOCIACIONS SEQUELIZE ---
+
 Incidencia.belongsTo(Departament, { foreignKey: 'idDepartament' });
 Departament.hasMany(Incidencia, { foreignKey: 'idDepartament' });
 
@@ -30,7 +30,6 @@ Tecnic.hasMany(Actuacio, { foreignKey: 'idTecnic' });
 Departament.belongsTo(Tecnic, { foreignKey: 'idTecnic', allowNull: true });
 Tecnic.hasMany(Departament, { foreignKey: 'idTecnic' });
 
-// Rutes per a les vistes EJS (Sequelize)
 const incidenciesEjsRoutes = require('./routes/IncidenciesEJS.routes.js');
 const departamentEjsRoutes = require('./routes/DepartamentEJS.routes.js');
 const actuacionsEjsRoutes = require('./routes/ActuacionsEJS.routes.js');
@@ -46,7 +45,6 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// MONGODB
 app.use(async (req, res, next) => {
     res.on('finish', async () => {
         try {
@@ -61,7 +59,6 @@ app.use(async (req, res, next) => {
     next();
 });
 
-// Rutes principals de l'aplicació
 app.use('/incidencies', incidenciesEjsRoutes);
 app.use('/actuacions', actuacionsEjsRoutes);
 app.use('/departaments', departamentEjsRoutes);

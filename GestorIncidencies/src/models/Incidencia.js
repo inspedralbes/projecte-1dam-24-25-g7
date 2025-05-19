@@ -11,7 +11,6 @@ const Incidencia = sequelize.define('Incidencia', {
   },
   resolta: {
     type: DataTypes.BOOLEAN,
-    //allowNull: true,
     defaultValue: false,
   },
   prioritat: {

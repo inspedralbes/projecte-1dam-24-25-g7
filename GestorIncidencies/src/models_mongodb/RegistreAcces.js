@@ -2,12 +2,12 @@
 const mongoose = require('mongoose');
 
 const registreAccesSchema = new mongoose.Schema({
-    timestamp: { // Data i hora de l'accés
+    timestamp: { 
         type: Date,
         default: Date.now,
         required: true
     },
-    ruta: { // La ruta visitada (pàgina), ex: /incidencies, /actuacions/new
+    ruta: { 
         type: String,
         required: true,
         trim: true
