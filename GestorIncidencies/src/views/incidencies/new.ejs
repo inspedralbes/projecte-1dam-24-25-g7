@@ -1,62 +1,74 @@
+<!-- src/views/incidencies/new.ejs -->
 <%- include('../partials/header', { title: 'Registrar Nova Incidència' }) %>
 
-    <div class="title-box">
-        <h1>REGISTRAR NOVA INCIDÈNCIA</h1>
-    </div>
+    <h1 class="mb-4 text-center">REGISTRAR NOVA INCIDÈNCIA</h1>
 
     <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
-        <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 10px; border: 1px solid #f5c6cb; border-radius: 4px; margin-bottom: 20px; max-width: 700px; margin-left: auto; margin-right: auto;">
+        <div class="alert alert-danger col-md-8 offset-md-2" role="alert">
             <%= errorMessage %>
         </div>
     <% } %>
 
-    <form action="/incidencies/create" method="POST" class="incidencias-form" style="width: 80%; max-width: 700px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <form action="/incidencies/create" method="POST">
+                        <div class="mb-3">
+                            <label for="descripcio_incidencia" class="form-label">Descripció detallada:</label>
+                            <textarea class="form-control" id="descripcio_incidencia" name="descripcio_incidencia" rows="5" required placeholder="Descriu el problema: què passa, on exactament, des de quan..."></textarea>
+                        </div>
 
-        <div class="form-group">
-            <label for="descripcio_incidencia">Descripció detallada:</label>
-            <textarea id="descripcio_incidencia" name="descripcio_incidencia" rows="6" required placeholder="Descriu el problema: què passa, on exactament, des de quan..."></textarea>
-        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="idTecnic" class="form-label">Assignar a Tècnic:</label>
+                                <select class="form-select" id="idTecnic" name="idTecnic">
+                                    <option value="">-- No Assignat --</option>
+                                    <% tecnics.forEach(tecnic => { %>
+                                        <option value="<%= tecnic.id %>"><%= tecnic.nom %></option>
+                                    <% }); %>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="idDepartament" class="form-label">Departament:</label>
+                                <select class="form-select" id="idDepartament" name="idDepartament" required>
+                                    <option value="" disabled selected>-- Selecciona Departament --</option>
+                                    <% departaments.forEach(departament => { %>
+                                        <option value="<%= departament.id %>"><%= departament.nom %></option>
+                                    <% }); %>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="prioritat_incidencia" class="form-label">Prioritat:</label>
+                                <select class="form-select" id="prioritat_incidencia" name="prioritat_incidencia">
+                                    <option value="" disabled selected>-- Selecciona Prioritat --</option>
+                                    <option value="Alta">Alta</option>
+                                    <option value="mitja">Mitja</option>
+                                    <option value="baixa">Baixa</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3 align-self-center">
+                                <div class="form-check mt-3">
+                                    <input class="form-check-input" type="checkbox" id="resolta_incidencia" name="resolta_incidencia" value="true">
+                                    <label class="form-check-label" for="resolta_incidencia">
+                                        Resolta
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
 
-         <div class="form-group">
-            <label for="idTecnic">Assignar a Tècnic:</label>
-            <select id="idTecnic" name="idTecnic">
-                <option value="">-- No Assignat --</option>
-                <% tecnics.forEach(tecnic => { %>
-                    <option value="<%= tecnic.id %>"><%= tecnic.nom %></option>
-                <% }); %>
-            </select>
+                        <div class="mt-4 d-flex justify-content-end">
+                            <a href="/incidencies" class="btn btn-secondary me-2">Cancel·lar</a>
+                            <button type="reset" class="btn btn-outline-secondary me-2">Netejar</button>
+                            <button type="submit" class="btn btn-primary">Crear Incidència</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-
-         <div class="form-group">
-            <label for="idDepartament">Departament:</label>
-            <select id="idDepartament" name="idDepartament" required>
-                 <option value="" disabled selected>-- Selecciona Departament --</option>
-                <% departaments.forEach(departament => { %>
-                     <option value="<%= departament.id %>"><%= departament.nom %></option>
-                <% }); %>
-            </select>
-        </div>
-
-        <div class="form-group">
-             <input type="checkbox" id="resolta_incidencia" name="resolta_incidencia" value="true">
-             <label for="resolta_incidencia">Resolta</label>
-        </div>
-
-         <div class="form-group">
-            <label for="prioritat_incidencia">Prioritat:</label>
-            <select id="prioritat_incidencia" name="prioritat_incidencia">
-                 <option value="" disabled selected>-- Selecciona Prioritat --</option>
-                 <option value="Alta">Alta</option>
-                 <option value="mitja">Mitja</option>
-                 <option value="baixa">Baixa</option>
-             </select>
-        </div>
-
-        <div class="form-group">
-            <button type="submit">Crear Incidència</button>
-            <button type="reset">Netejar Formulari</button>
-             <a href="/incidencies" style="text-decoration: none; padding: 0.8em 1.5em; background-color: #6c757d; color: white; border-radius: 4px; font-size: 1em; margin-left: 1em;">Cancel·lar</a>
-        </div>
-    </form>
+    </div>
 
 <%- include('../partials/footer') %>

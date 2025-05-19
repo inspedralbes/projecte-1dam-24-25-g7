@@ -1,61 +1,69 @@
 <%- include('../partials/header', { title: 'Registrar Nova Actuació' }) %>
 
-    <div class="title-box">
-        <h1>REGISTRAR NOVA ACTUACIÓ</h1>
-    </div>
+    <h1 class="mb-4 text-center">REGISTRAR NOVA ACTUACIÓ</h1>
 
     <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
-        <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 10px; border: 1px solid #f5c6cb; border-radius: 4px; margin-bottom: 20px; max-width: 700px; margin-left: auto; margin-right: auto;">
+        <div class="alert alert-danger col-md-8 offset-md-2" role="alert">
             <%= errorMessage %>
         </div>
     <% } %>
 
-    <form action="/actuacions/create" method="POST" class="incidencias-form" style="width: 80%; max-width: 700px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <form action="/actuacions/create" method="POST">
+                        <div class="mb-3">
+                            <label for="descripcio_actuacio" class="form-label">Descripció de l'actuació:</label>
+                            <textarea class="form-control" id="descripcio_actuacio" name="descripcio_actuacio" rows="4" required placeholder="Detalla la feina realitzada..."></textarea>
+                        </div>
 
-        <div class="form-group">
-            <label for="descripcio_actuacio">Descripció de l'actuació:</label>
-            <textarea id="descripcio_actuacio" name="descripcio_actuacio" rows="4" required placeholder="Detalla la feina realitzada..."></textarea>
-        </div>
+                        <div class="mb-3">
+                            <label for="idIncidencia" class="form-label">Per a la Incidència:</label>
+                            <select class="form-select" id="idIncidencia" name="idIncidencia" required>
+                                <option value="" disabled selected>-- Selecciona Incidència --</option>
+                                <% if (typeof incidencias !== 'undefined' && incidencias.length > 0) { %>
+                                    <% incidencias.forEach(incidencia => { %>
+                                        <option value="<%= incidencia.id %>">ID: <%= incidencia.id %> - <%= incidencia.descripcio.substring(0, 70) %>...</option>
+                                    <% }); %>
+                                <% } %>
+                            </select>
+                        </div>
 
-        <div class="form-group">
-            <label for="idIncidencia">Per a la Incidència:</label>
-            <select id="idIncidencia" name="idIncidencia" required>
-                 <option value="" disabled selected>-- Selecciona Incidència --</option>
-                <% if (typeof incidencias !== 'undefined' && incidencias.length > 0) { %>
-                    <% incidencias.forEach(incidencia => { %>
-                         <option value="<%= incidencia.id %>">ID: <%= incidencia.id %> - <%= incidencia.descripcio.substring(0, 50) %>...</option>
-                    <% }); %>
-                <% } %>
-            </select>
-        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="idTecnic" class="form-label">Realitzada per Tècnic:</label>
+                                <select class="form-select" id="idTecnic" name="idTecnic">
+                                    <option value="">-- No Assignat / Selecciona Tècnic --</option>
+                                    <% if (typeof tecnics !== 'undefined' && tecnics.length > 0) { %>
+                                        <% tecnics.forEach(tecnic => { %>
+                                            <option value="<%= tecnic.id %>"><%= tecnic.nom %></option>
+                                        <% }); %>
+                                    <% } %>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="temps_actuacio" class="form-label">Temps dedicat (minuts):</label>
+                                <input type="number" class="form-control" id="temps_actuacio" name="temps_actuacio" min="0" placeholder="Ex: 30">
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            <label for="idTecnic">Realitzada per Tècnic:</label>
-            <select id="idTecnic" name="idTecnic">
-                <option value="">-- No Assignat / Selecciona Tècnic --</option>
-                 <% if (typeof tecnics !== 'undefined' && tecnics.length > 0) { %>
-                    <% tecnics.forEach(tecnic => { %>
-                        <option value="<%= tecnic.id %>"><%= tecnic.nom %></option>
-                    <% }); %>
-                <% } %>
-            </select>
-        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="visible_actuacio" name="visible_actuacio" value="true" checked>
+                            <label class="form-check-label" for="visible_actuacio">
+                                Aquesta actuació és visible per l'usuari
+                            </label>
+                        </div>
 
-        <div class="form-group">
-            <label for="temps_actuacio">Temps dedicat (minuts):</label>
-            <input type="number" id="temps_actuacio" name="temps_actuacio" min="0" placeholder="Ex: 30">
+                        <div class="mt-4 d-flex justify-content-end">
+                            <a href="/actuacions" class="btn btn-secondary me-2">Cancel·lar</a>
+                            <button type="reset" class="btn btn-outline-secondary me-2">Netejar</button>
+                            <button type="submit" class="btn btn-primary">Crear Actuació</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-
-        <div class="form-group">
-             <input type="checkbox" id="visible_actuacio" name="visible_actuacio" value="true" checked> <!-- Per defecte visible -->
-             <label for="visible_actuacio">Aquesta actuació és visible</label>
-        </div>
-
-        <div class="form-group">
-            <button type="submit">Crear Actuació</button>
-            <button type="reset">Netejar</button>
-             <a href="/actuacions" style="text-decoration: none; padding: 0.8em 1.5em; background-color: #6c757d; color: white; border-radius: 4px; font-size: 1em; margin-left: 1em;">Cancel·lar</a>
-        </div>
-    </form>
+    </div>
 
 <%- include('../partials/footer') %>

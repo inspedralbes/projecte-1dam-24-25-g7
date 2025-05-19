@@ -1,15 +1,15 @@
 <!-- src/views/index.ejs -->
 <%- include('partials/header', { title: 'Inici' }) %>
 
-    <div class="title-box">
-        <h1>GESTOR<br>D'Incidencies</h1>
+    <div class="text-center p-5 mb-4 bg-light rounded-3 shadow-sm">
+        <h1 class="display-4 fw-bold">GESTOR<br>D'INCIDÈNCIES</h1>
     </div>
 
-    <div class="action-buttons">
-        <a href="/incidencies">Veure Incidències</a>
-        <a href="/incidencies/new">Nova Incidència</a>
-        <a href="/actuacions">Gestionar Actuacions</a>
-        <a href="/estadistiques/accessos">Estadístiques d'Accés</a> 
+    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+        <a href="/incidencies" class="btn btn-primary btn-lg px-4 me-md-2">Veure Incidències</a>
+        <a href="/incidencies/new" class="btn btn-outline-secondary btn-lg px-4 me-md-2">Nova Incidència</a>
+        <a href="/actuacions" class="btn btn-outline-secondary btn-lg px-4 me-md-2">Gestionar Actuacions</a>
+        <a href="/estadistiques/accessos" class="btn btn-outline-info btn-lg px-4">Estadístiques d'Accés</a> 
     </div>
 
 <%- include('partials/footer') %>
