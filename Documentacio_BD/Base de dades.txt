@@ -1,1 +1,86 @@
-aquñi
+-- Adminer 5.2.1 MySQL 5.7.44 dump
+
+SET NAMES utf8;
+SET time_zone = '+00:00';
+SET foreign_key_checks = 0;
+SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+
+DROP TABLE IF EXISTS `Actuacio`;
+CREATE TABLE `Actuacio` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcio` text NOT NULL,
+  `temps` int(11) DEFAULT NULL,
+  `visible` tinyint(1) DEFAULT NULL,
+  `idIncidencia` int(11) NOT NULL,
+  `idTecnic` int(11) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idIncidencia` (`idIncidencia`),
+  KEY `idTecnic` (`idTecnic`),
+  CONSTRAINT `Actuacio_ibfk_1` FOREIGN KEY (`idIncidencia`) REFERENCES `Incidencies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Actuacio_ibfk_2` FOREIGN KEY (`idTecnic`) REFERENCES `Tecnic` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `Actuacio` (`id`, `descripcio`, `temps`, `visible`, `idIncidencia`, `idTecnic`, `createdAt`, `updatedAt`) VALUES
+(1,	'Altaveus arreglats',	5,	0,	3,	3,	'2025-05-19 10:48:49',	'2025-05-19 10:48:49'),
+(2,	'monitor canviat',	5,	0,	4,	1,	'2025-05-19 10:48:49',	'2025-05-19 10:48:49'),
+(3,	'teclat canviat',	25,	1,	6,	3,	'2025-05-19 10:48:50',	'2025-05-19 10:48:50');
+
+DROP TABLE IF EXISTS `Departaments`;
+CREATE TABLE `Departaments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(255) NOT NULL,
+  `idTecnic` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nom` (`nom`),
+  KEY `idTecnic` (`idTecnic`),
+  CONSTRAINT `Departaments_ibfk_1` FOREIGN KEY (`idTecnic`) REFERENCES `Tecnic` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `Departaments` (`id`, `nom`, `idTecnic`) VALUES
+(1,	'Llengues',	NULL),
+(2,	'Matematiques',	NULL),
+(3,	'Ciencies',	NULL),
+(4,	'Arts',	NULL),
+(5,	'Esports',	NULL),
+(6,	'Informàtica',	NULL);
+
+DROP TABLE IF EXISTS `Incidencies`;
+CREATE TABLE `Incidencies` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcio` text NOT NULL,
+  `resolta` tinyint(1) DEFAULT '0',
+  `prioritat` enum('Alta','mitja','baixa') DEFAULT NULL,
+  `idTecnic` int(11) DEFAULT NULL,
+  `idDepartament` int(11) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idTecnic` (`idTecnic`),
+  KEY `idDepartament` (`idDepartament`),
+  CONSTRAINT `Incidencies_ibfk_1` FOREIGN KEY (`idTecnic`) REFERENCES `Tecnic` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `Incidencies_ibfk_2` FOREIGN KEY (`idDepartament`) REFERENCES `Departaments` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `Incidencies` (`id`, `descripcio`, `resolta`, `prioritat`, `idTecnic`, `idDepartament`, `createdAt`, `updatedAt`) VALUES
+(1,	'No puc entrar al sistema CRM des de les 9:00. Mostra un error 500',	0,	'Alta',	1,	1,	'2025-05-19 10:48:49',	'2025-05-19 10:48:49'),
+(2,	'El ratolí de la taula del profesor no funciona',	0,	'baixa',	2,	4,	'2025-05-19 10:48:49',	'2025-05-19 10:48:49'),
+(3,	'S´han trencat els altaveus de la sala info-6',	1,	'mitja',	3,	6,	'2025-05-19 10:48:49',	'2025-05-19 10:48:49'),
+(4,	'La pantalla del ordinador pegat a la finestra de la 2a fila està partida',	1,	'Alta',	1,	5,	'2025-05-19 10:48:49',	'2025-05-19 10:48:49'),
+(5,	'EL projector de l´aula de física o química no funciona',	0,	'mitja',	2,	5,	'2025-05-19 10:48:49',	'2025-05-19 10:48:49'),
+(6,	'El teclat del profesor no respon',	1,	'Alta',	3,	4,	'2025-05-19 10:48:49',	'2025-05-19 10:48:49');
+
+DROP TABLE IF EXISTS `Tecnic`;
+CREATE TABLE `Tecnic` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `Tecnic` (`id`, `nom`) VALUES
+(1,	'Alvaro Perez'),
+(2,	'Ermengol Bota'),
+(3,	'Pol Prats');
+
+-- 2025-05-19 10:53:42 UTC
