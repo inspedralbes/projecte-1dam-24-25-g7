@@ -79,28 +79,91 @@ app.get('/', (req, res) => {
     const countDepartaments = await Departament.count();
     if (countDepartaments === 0) {
         console.log('Creant dades inicials per a MySQL...');
-        await Departament.create({ nom: 'Info-1' });
-        await Departament.create({ nom: 'Info-3' });
-        await Departament.create({ nom: 'Info-2' });
+        await Departament.create({ nom: 'Llengues' });
+        await Departament.create({ nom: 'Matematiques' });
+        await Departament.create({ nom: 'Ciencies' });
+        await Departament.create({ nom: 'Arts' });
+        await Departament.create({ nom: 'Esports' });
+        await Departament.create({ nom:  'Informàtica'});
 
-        await Tecnic.create({ nom: 'Judit Sarrat' });
-        await Tecnic.create({ nom: 'Enrique Cayo' });
+        await Tecnic.create({ nom: 'Alvaro Perez' });
+        await Tecnic.create({ nom: 'Ermengol Bota' });
+        await Tecnic.create({ nom: 'Pol Prats' });
 
         const incidenciaCreada = await Incidencia.create({
             descripcio: 'No puc entrar al sistema CRM des de les 9:00. Mostra un error 500',
             resolta: false,
-            prioritat: 'baixa',
+            prioritat: 'alta',
             idTecnic: 1,
             idDepartament: 1
         });
 
-        await Actuacio.create({
-            descripcio: 'Ratolí ha sigut canviat',
-            temps: 15,
-            visible: true,
-            idTecnic: 1,
-            idIncidencia: incidenciaCreada.id,
+
+        await Incidencia.create({
+            descripcio: 'El ratolí de la taula del profesor no funciona',
+            resolta: false,
+            prioritat: 'baixa',
+            idTecnic: 2,
+            idDepartament: 4
         });
+
+
+        await Incidencia.create({
+            descripcio: 'S´han trencat els altaveus de la sala info-6',
+            resolta: true,
+            prioritat: 'mitja',
+            idTecnic: 3,
+            idDepartament: 6
+        });
+        
+        await Actuacio.create({
+            descripcio: 'Altaveus arreglats',
+            temps: 5,
+            visible: false,
+            idTecnic: 3,
+            idIncidencia: 3,
+        });
+
+        await Incidencia.create({
+            descripcio: 'La pantalla del ordinador pegat a la finestra de la 2a fila està partida',
+            resolta: true,
+            prioritat: 'alta',
+            idTecnic: 1,
+            idDepartament: 5
+        });
+        
+        await Actuacio.create({
+            descripcio: 'monitor canviat',
+            temps: 5,
+            visible: false,
+            idTecnic: 1,
+            idIncidencia: 4,
+        });
+
+        await Incidencia.create({
+            descripcio: 'EL projector de l´aula de física o química no funciona',
+            resolta: false,
+            prioritat: 'mitja',
+            idTecnic: 2,
+            idDepartament: 5
+        });
+        
+        await Incidencia.create({
+            descripcio: 'El teclat del profesor no respon',
+            resolta: true,
+            prioritat: 'alta',
+            idTecnic: 3,
+            idDepartament: 4
+        });
+        
+        await Actuacio.create({
+            descripcio: 'teclat canviat',
+            temps: 25,
+            visible: true,
+            idTecnic: 3,
+            idIncidencia: 6,
+        });
+
         console.log('Dades inicials de MySQL creades.');
     } else {
          console.log('Les dades inicials de MySQL ja existeixen, no es tornen a crear.');
